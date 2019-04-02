@@ -25,6 +25,7 @@ public class DenchErpApplication extends SpringBootServletInitializer {
 		return application.sources(DenchErpApplication.class);
 	}
 
+	
 	public static void main(String[] args) {
 		SpringApplication.run(DenchErpApplication.class, args);
 	}
