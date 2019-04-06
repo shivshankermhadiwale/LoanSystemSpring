@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.dench.service.AuthSerivice;
 import com.dench.service.CustomerService;
 import com.dench.service.ItemService;
+import com.dench.service.LoanAmountService;
 import com.dench.service.PurchaseService;
 import com.dench.service.SalesService;
 import com.dench.service.ServiceManager;
@@ -25,6 +26,8 @@ public class ServiceManagerImpl implements ServiceManager {
 	private AuthSerivice authService;
 	@Autowired
 	private SalesService salesService;
+	@Autowired
+	private LoanAmountService amountService;
 	
 	public SalesService getSalesService() {
 		return salesService;
@@ -73,4 +76,13 @@ public class ServiceManagerImpl implements ServiceManager {
 	public void setCustService(CustomerService custService) {
 		this.customerService = custService;
 	}
+
+	public LoanAmountService getAmountService() {
+		return amountService;
+	}
+
+	public void setAmountService(LoanAmountService amountService) {
+		this.amountService = amountService;
+	}
+	
 }

@@ -12,4 +12,6 @@ public interface DaoManger {
 	public AuthDao getAuthDao();
 
 	public SalesDao getSalesDao();
+
+	public LoanAmountDao getAmountDao();
 }

@@ -7,6 +7,7 @@ import com.dench.dao.AuthDao;
 import com.dench.dao.CustomerDao;
 import com.dench.dao.DaoManger;
 import com.dench.dao.ItemDao;
+import com.dench.dao.LoanAmountDao;
 import com.dench.dao.PurchaseDao;
 import com.dench.dao.SalesDao;
 import com.dench.dao.SupplierDao;
@@ -26,6 +27,8 @@ public class DaoMangerImpl implements DaoManger {
 	private AuthDao authDao;
 	@Autowired
 	private SalesDao salesDao;
+	@Autowired
+	private LoanAmountDao amountDao;
 
 	public SalesDao getSalesDao() {
 		return salesDao;
@@ -82,4 +85,13 @@ public class DaoMangerImpl implements DaoManger {
 	public void setCustomerDao(CustomerDao custMasterDao) {
 		this.custMasterDao = custMasterDao;
 	}
+
+	public LoanAmountDao getAmountDao() {
+		return amountDao;
+	}
+
+	public void setAmountDao(LoanAmountDao amountDao) {
+		this.amountDao = amountDao;
+	}
+
 }

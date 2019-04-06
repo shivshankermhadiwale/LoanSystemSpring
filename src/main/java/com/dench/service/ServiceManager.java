@@ -12,4 +12,6 @@ public interface ServiceManager {
 	public AuthSerivice getAuthService();
 
 	public SalesService getSalesService();
+
+	public LoanAmountService getAmountService();
 }

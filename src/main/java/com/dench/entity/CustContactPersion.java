@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "Customer_Contact_Persions_Info")
 public class CustContactPersion {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long custContactPersionId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cust_id")
