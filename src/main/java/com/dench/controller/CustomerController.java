@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dench.dto.CustContactPersionDto;
 import com.dench.dto.CustomerDto;
 import com.dench.entity.CustPersionalDetail;
 
@@ -34,6 +35,24 @@ public class CustomerController extends ControllerManager {
 					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
 		return new ResponseEntity<>(this.getServiceManager().getCustomerService().addNewCustomer(customer),
 				HttpStatus.ACCEPTED);
+	}
+	
+	@PostMapping("/addContactPersions")
+	public ResponseEntity<?> addContactPersion(@Valid @RequestBody CustContactPersionDto custContact, Errors error)
+			throws MethodArgumentNotValidException {
+		logger.info(" : Adding New Contact Persion Of Customer------");
+		if (error.hasErrors())
+			return ResponseEntity.ok(
+					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
+		return new ResponseEntity<>(this.getServiceManager().getCustomerService().addCustContactPersion(custContact),
+				HttpStatus.ACCEPTED);
+	}
+	@GetMapping("/findContactPersionByCustId/{custId}")
+	public ResponseEntity<?>findCustContactByCusId(@PathVariable Long custId){
+		logger.info(" : Find Customer Conatact By Cust Id Process Begins------");
+		if(custId==null)
+			throw new NullPointerException("custId Is Empty");
+		return new ResponseEntity<>(this.getServiceManager().getCustomerService().getCustContactPersionByCustId(custId),HttpStatus.OK);
 	}
 
 	@GetMapping("/findById/{custId}")

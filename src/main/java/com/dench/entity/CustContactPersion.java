@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Customer_Contact_Persions_Info")
-public class CustContactPersions {
+public class CustContactPersion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long custContactPersionId;

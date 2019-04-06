@@ -11,10 +11,10 @@ public class CustomerDto implements Serializable {
 	private Short custType;
 	private String registrationNo;
 	private LocalDate registrationDate;
-	private String GSTINNo;
-	private String PANNo;
+	private String gstnNo;
+	private String panNo;
 	private String adharNo;
-	private AddressDto addressDto = new AddressDto();
+	private AddressDto address = new AddressDto();
 
 	public Long getCustId() {
 		return custId;
@@ -64,20 +64,20 @@ public class CustomerDto implements Serializable {
 		this.registrationDate = registrationDate;
 	}
 
-	public String getGSTINNo() {
-		return GSTINNo;
+	public String getGstnNo() {
+		return gstnNo;
 	}
 
-	public void setGSTINNo(String gSTINNo) {
-		GSTINNo = gSTINNo;
+	public void setGstnNo(String gstnNo) {
+		this.gstnNo = gstnNo;
 	}
 
-	public String getPANNo() {
-		return PANNo;
+	public String getPanNo() {
+		return panNo;
 	}
 
-	public void setPANNo(String pANNo) {
-		PANNo = pANNo;
+	public void setPanNo(String panNo) {
+		this.panNo = panNo;
 	}
 
 	public String getAdharNo() {
@@ -88,12 +88,12 @@ public class CustomerDto implements Serializable {
 		this.adharNo = adharNo;
 	}
 
-	public AddressDto getAddressDto() {
-		return addressDto;
+	public AddressDto getAddress() {
+		return address;
 	}
 
-	public void setAddressDto(AddressDto addressDto) {
-		this.addressDto = addressDto;
+	public void setAddress(AddressDto address) {
+		this.address = address;
 	}
 
 }

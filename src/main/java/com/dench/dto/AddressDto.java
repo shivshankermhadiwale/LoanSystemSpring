@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class AddressDto implements Serializable {
 	private static final long serialVersionUID = 1986338025942293946L;
 	private String address;
-	private Integer city;
-	private Integer district;
-	private Integer state;
-	private Integer country;
-	private Integer zipCode;
+	private String city;
+	private String district;
+	private String state;
+	private String country;
+	private String zipCode;
 	private String email;
 	private String phoneNo;
 	private String altNo;
@@ -19,36 +19,7 @@ public class AddressDto implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Integer getCity() {
-		return city;
-	}
-	public void setCity(Integer city) {
-		this.city = city;
-	}
-	public Integer getDistrict() {
-		return district;
-	}
-	public void setDistrict(Integer district) {
-		this.district = district;
-	}
-	public Integer getState() {
-		return state;
-	}
-	public void setState(Integer state) {
-		this.state = state;
-	}
-	public Integer getCountry() {
-		return country;
-	}
-	public void setCountry(Integer country) {
-		this.country = country;
-	}
-	public Integer getZipCode() {
-		return zipCode;
-	}
-	public void setZipCode(Integer zipCode) {
-		this.zipCode = zipCode;
-	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -67,6 +38,38 @@ public class AddressDto implements Serializable {
 	public void setAltNo(String altNo) {
 		this.altNo = altNo;
 	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public String getZipCode() {
+		return zipCode;
+	}
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+	
+	
 	
 
 }

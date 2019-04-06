@@ -36,7 +36,7 @@ public class CustPersionalDetail implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
 	private CustomerAudit custAudit;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-	private Set<CustContactPersions> custContactPersionsInfo = new HashSet<CustContactPersions>();
+	private Set<CustContactPersion> custContactPersionsInfo = new HashSet<CustContactPersion>();
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
 	private Set<CustAddressDetail> custCommunicationInfo = new HashSet<CustAddressDetail>();
 
@@ -107,11 +107,11 @@ public class CustPersionalDetail implements Serializable {
 		PANNo = pANNo;
 	}
 
-	public Set<CustContactPersions> getCustContactPersionsInfo() {
+	public Set<CustContactPersion> getCustContactPersionsInfo() {
 		return custContactPersionsInfo;
 	}
 
-	public void setCustContactPersionsInfo(Set<CustContactPersions> custContactPersionsInfo) {
+	public void setCustContactPersionsInfo(Set<CustContactPersion> custContactPersionsInfo) {
 		this.custContactPersionsInfo = custContactPersionsInfo;
 	}
 
