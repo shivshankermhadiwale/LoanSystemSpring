@@ -22,8 +22,8 @@ public class LoanAmountServiceImpl extends DaoServicess implements LoanAmountSer
 			throw new NullPointerException("Customer Not Found");
 		LoanAccountDetail loanAccountDetail = new LoanAccountDetail();
 		loanAccountDetail.setCustId(custPersionalDetail.get());
-		loanAccountDetail.setEmiAmount(accountDetail.getEmiAmount());
-		loanAccountDetail.setEmiStartDate(accountDetail.getEmiStartDate());
+		loanAccountDetail.setInstallmentAmount(accountDetail.getEmiAmount());
+		loanAccountDetail.setInstallmentSartDate(accountDetail.getEmiStartDate());
 		loanAccountDetail.setLoanDate(accountDetail.getLoanDate());
 		loanAccountDetail.setLoanInterest(accountDetail.getLoanInterest());
 		loanAccountDetail.setLoanTenureInMonths(accountDetail.getLoanTenureInMonths());

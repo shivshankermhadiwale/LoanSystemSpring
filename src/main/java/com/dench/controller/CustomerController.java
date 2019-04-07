@@ -36,6 +36,12 @@ public class CustomerController extends ControllerManager {
 		return new ResponseEntity<>(this.getServiceManager().getCustomerService().addNewCustomer(customer),
 				HttpStatus.ACCEPTED);
 	}
+	@GetMapping("/findAll")
+	public ResponseEntity<?> findAllCustomer(){
+		return new ResponseEntity<>(this.getServiceManager().getCustomerService().getAllCustomersLst(),
+				HttpStatus.ACCEPTED);
+	}
+	
 	
 	@PostMapping("/addContactPersions")
 	public ResponseEntity<?> addContactPersion(@Valid @RequestBody CustContactPersionDto custContact, Errors error)

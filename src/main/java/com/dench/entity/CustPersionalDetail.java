@@ -15,8 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Table(name = "customer")
 public class CustPersionalDetail implements Serializable {
@@ -32,23 +30,7 @@ public class CustPersionalDetail implements Serializable {
 	private String GSTINNo;
 	private String PANNo;
 	private String adharNo;
-	private Boolean isDeleted=false;
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-	private CustomerAudit custAudit;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-	private Set<CustContactPersion> custContactPersionsInfo = new HashSet<CustContactPersion>();
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-	private Set<CustAddressDetail> custCommunicationInfo = new HashSet<CustAddressDetail>();
-
-	public CustomerAudit getCustAudit() {
-		return custAudit;
-	}
-
-	public void setCustAudit(CustomerAudit custAudit) {
-		this.custAudit = custAudit;
-	}
-
-	
+	private Boolean isDeleted = false;
 
 	public Boolean getIsDeleted() {
 		return isDeleted;
@@ -81,7 +63,6 @@ public class CustPersionalDetail implements Serializable {
 	public void setCustType(Short custType) {
 		this.custType = custType;
 	}
-	
 
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
@@ -97,30 +78,6 @@ public class CustPersionalDetail implements Serializable {
 
 	public void setGSTINNo(String gSTINNo) {
 		GSTINNo = gSTINNo;
-	}
-
-	public String getPANNo() {
-		return PANNo;
-	}
-
-	public void setPANNo(String pANNo) {
-		PANNo = pANNo;
-	}
-
-	public Set<CustContactPersion> getCustContactPersionsInfo() {
-		return custContactPersionsInfo;
-	}
-
-	public void setCustContactPersionsInfo(Set<CustContactPersion> custContactPersionsInfo) {
-		this.custContactPersionsInfo = custContactPersionsInfo;
-	}
-
-	public Set<CustAddressDetail> getCustCommunicationInfo() {
-		return custCommunicationInfo;
-	}
-
-	public void setCustCommunicationInfo(Set<CustAddressDetail> custCommunicationInfo) {
-		this.custCommunicationInfo = custCommunicationInfo;
 	}
 
 	public String getAdharNo() {
@@ -146,6 +103,13 @@ public class CustPersionalDetail implements Serializable {
 	public void setRegistrationNo(String registrationNo) {
 		this.registrationNo = registrationNo;
 	}
-	
-	
+
+	public String getPANNo() {
+		return PANNo;
+	}
+
+	public void setPANNo(String pANNo) {
+		PANNo = pANNo;
+	}
+
 }

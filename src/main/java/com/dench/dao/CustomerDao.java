@@ -21,4 +21,5 @@ public interface CustomerDao {
 	public CustomerAudit saveCustomerAudit(CustomerAudit custAudit);
 	public CustContactPersion addCustContactPersion(CustContactPersion contactPersions);
 	public List<CustContactPersion> getCustContactPersionByCustPersionalDetail(CustPersionalDetail custPersionalDetail);
+	public List<CustPersionalDetail> getAllCustomersLst();
 }

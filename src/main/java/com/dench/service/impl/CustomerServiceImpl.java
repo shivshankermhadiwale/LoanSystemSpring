@@ -54,7 +54,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 		custAudit.setUserName("NA");
 		custAudit.setCustomer(custPersionalDetail);
 		custAudit.setCreatedOnDateTime(LocalDateTime.now());
-		custPersionalDetail.setCustAudit(custAudit);
+		//custPersionalDetail.setCustAudit(custAudit);
 		custPersionalDetail = this.getDaoManager().getCustomerDao().addCustomerDetail(custPersionalDetail);
 		if (custPersionalDetail == null)
 			throw new NullPointerException("Error while Saving Customer Detail");
@@ -163,6 +163,11 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 					return contactPersionDto;
 				}).collect(Collectors.toList());
 		return contactPersion;
+	}
+
+	@Override
+	public List<CustPersionalDetail> getAllCustomersLst() {
+		return this.getDaoManager().getCustomerDao().getAllCustomersLst();
 	}
 
 }

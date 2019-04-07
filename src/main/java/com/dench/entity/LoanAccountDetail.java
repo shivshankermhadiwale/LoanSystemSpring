@@ -25,8 +25,9 @@ public class LoanAccountDetail implements Serializable {
 	private CustPersionalDetail custId;
 	private Double principalAmount;
 	private LocalDate loanDate;
-	private LocalDate emiStartDate;
-	private Double emiAmount;
+	private LocalDate installmentSartDate;
+	private String installMentType;
+	private Double installmentAmount;
 	private Float loanInterest;
 	private Integer loanTenureInMonths;
 	private Integer loanTenureInYears;
@@ -65,20 +66,20 @@ public class LoanAccountDetail implements Serializable {
 		this.loanDate = loanDate;
 	}
 
-	public LocalDate getEmiStartDate() {
-		return emiStartDate;
+	public LocalDate getInstallmentSartDate() {
+		return installmentSartDate;
 	}
 
-	public void setEmiStartDate(LocalDate emiStartDate) {
-		this.emiStartDate = emiStartDate;
+	public void setInstallmentSartDate(LocalDate installmentSartDate) {
+		this.installmentSartDate = installmentSartDate;
 	}
 
-	public Double getEmiAmount() {
-		return emiAmount;
+	public Double getInstallmentAmount() {
+		return installmentAmount;
 	}
 
-	public void setEmiAmount(Double emiAmount) {
-		this.emiAmount = emiAmount;
+	public void setInstallmentAmount(Double installmentAmount) {
+		this.installmentAmount = installmentAmount;
 	}
 
 	public Float getLoanInterest() {
@@ -119,6 +120,14 @@ public class LoanAccountDetail implements Serializable {
 
 	public void setLoanEndingDate(LocalDate loanEndingDate) {
 		this.loanEndingDate = loanEndingDate;
+	}
+
+	public String getInstallMentType() {
+		return installMentType;
+	}
+
+	public void setInstallMentType(String installMentType) {
+		this.installMentType = installMentType;
 	}
 
 }

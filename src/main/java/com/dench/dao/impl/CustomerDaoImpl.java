@@ -64,4 +64,10 @@ public class CustomerDaoImpl implements CustomerDao {
 		return custContactpersionRepo.getCustContactPersionByCustomer(custPersionalDetail);
 	}
 
+	@Override
+	public List<CustPersionalDetail> getAllCustomersLst() {
+		return (List<CustPersionalDetail>) customerRepo.findAll();
+		
+	}
+
 }
