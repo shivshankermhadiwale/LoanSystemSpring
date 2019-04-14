@@ -3,7 +3,6 @@ package com.dsoft.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,15 +23,20 @@ public class LoanAccountDetail implements Serializable {
 	@JoinColumn(name = "cust_id")
 	private CustPersionalDetail custId;
 	private Double principalAmount;
-	private LocalDate loanDate;
+	private Float interest;
+	private Double interestAmt;
+	private Double processingFees;
+	private Double depositeAmt;
+	private Double loanAmt;
+	private LocalDate loanStartDate;
+	private LocalDate loanEndDate;
 	private LocalDate installmentSartDate;
 	private String installMentType;
+	private Integer installments;
 	private Double installmentAmount;
-	private Float loanInterest;
-	private Integer loanTenureInMonths;
-	private Integer loanTenureInYears;
 	private Double totalCollection;
-	private LocalDate loanEndingDate;
+	private String loanStatus;
+	private LocalDate lastUpdated;
 
 	public Long getLoanAccountNo() {
 		return loanAccountNo;
@@ -58,14 +62,6 @@ public class LoanAccountDetail implements Serializable {
 		this.principalAmount = principalAmount;
 	}
 
-	public LocalDate getLoanDate() {
-		return loanDate;
-	}
-
-	public void setLoanDate(LocalDate loanDate) {
-		this.loanDate = loanDate;
-	}
-
 	public LocalDate getInstallmentSartDate() {
 		return installmentSartDate;
 	}
@@ -82,30 +78,6 @@ public class LoanAccountDetail implements Serializable {
 		this.installmentAmount = installmentAmount;
 	}
 
-	public Float getLoanInterest() {
-		return loanInterest;
-	}
-
-	public void setLoanInterest(Float loanInterest) {
-		this.loanInterest = loanInterest;
-	}
-
-	public Integer getLoanTenureInMonths() {
-		return loanTenureInMonths;
-	}
-
-	public void setLoanTenureInMonths(Integer loanTenureInMonths) {
-		this.loanTenureInMonths = loanTenureInMonths;
-	}
-
-	public Integer getLoanTenureInYears() {
-		return loanTenureInYears;
-	}
-
-	public void setLoanTenureInYears(Integer loanTenureInYears) {
-		this.loanTenureInYears = loanTenureInYears;
-	}
-
 	public Double getTotalCollection() {
 		return totalCollection;
 	}
@@ -114,20 +86,92 @@ public class LoanAccountDetail implements Serializable {
 		this.totalCollection = totalCollection;
 	}
 
-	public LocalDate getLoanEndingDate() {
-		return loanEndingDate;
-	}
-
-	public void setLoanEndingDate(LocalDate loanEndingDate) {
-		this.loanEndingDate = loanEndingDate;
-	}
-
 	public String getInstallMentType() {
 		return installMentType;
 	}
 
 	public void setInstallMentType(String installMentType) {
 		this.installMentType = installMentType;
+	}
+
+	public String getLoanStatus() {
+		return loanStatus;
+	}
+
+	public void setLoanStatus(String loanStatus) {
+		this.loanStatus = loanStatus;
+	}
+
+	public Float getInterest() {
+		return interest;
+	}
+
+	public void setInterest(Float interest) {
+		this.interest = interest;
+	}
+
+	public Double getInterestAmt() {
+		return interestAmt;
+	}
+
+	public void setInterestAmt(Double interestAmt) {
+		this.interestAmt = interestAmt;
+	}
+
+	public Double getDepositeAmt() {
+		return depositeAmt;
+	}
+
+	public void setDepositeAmt(Double depositeAmt) {
+		this.depositeAmt = depositeAmt;
+	}
+
+	public Double getProcessingFees() {
+		return processingFees;
+	}
+
+	public void setProcessingFees(Double processingFees) {
+		this.processingFees = processingFees;
+	}
+
+	public Double getLoanAmt() {
+		return loanAmt;
+	}
+
+	public void setLoanAmt(Double loanAmt) {
+		this.loanAmt = loanAmt;
+	}
+
+	public LocalDate getLoanStartDate() {
+		return loanStartDate;
+	}
+
+	public void setLoanStartDate(LocalDate loanStartDate) {
+		this.loanStartDate = loanStartDate;
+	}
+
+	public Integer getInstallments() {
+		return installments;
+	}
+
+	public void setInstallments(Integer installments) {
+		this.installments = installments;
+	}
+
+	public LocalDate getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setLastUpdated(LocalDate lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
+	public LocalDate getLoanEndDate() {
+		return loanEndDate;
+	}
+
+	public void setLoanEndDate(LocalDate loanEndDate) {
+		this.loanEndDate = loanEndDate;
 	}
 
 }

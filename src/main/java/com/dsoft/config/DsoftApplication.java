@@ -15,9 +15,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan(basePackages = "com.dench")
-@EnableJpaRepositories("com.dench")
-@EntityScan("com.dench.entity")
+@ComponentScan(basePackages = "com.dsoft")
+@EnableJpaRepositories("com.dsoft")
+@EntityScan("com.dsoft.entity")
 //@EnableZuulProxy
 public class DsoftApplication extends SpringBootServletInitializer {
 	@Override

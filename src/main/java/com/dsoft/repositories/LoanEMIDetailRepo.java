@@ -1,9 +1,13 @@
 package com.dsoft.repositories;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
-import com.dsoft.entity.LoanEMIDetail;
+import com.dsoft.entity.LoanAccountDetail;
+import com.dsoft.entity.LoanInstallmentsDetail;
 
-public interface LoanEMIDetailRepo extends CrudRepository<LoanEMIDetail,Long>{
+public interface LoanEMIDetailRepo extends CrudRepository<LoanInstallmentsDetail, Long> {
+	public List<LoanInstallmentsDetail> getLoanInstallmentsByLoanAccouuntNo(LoanAccountDetail accountDetail);
 
 }

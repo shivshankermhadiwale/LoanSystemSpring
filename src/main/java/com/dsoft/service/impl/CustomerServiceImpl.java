@@ -3,7 +3,6 @@ package com.dsoft.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -28,11 +27,8 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 	@Override
 	public CustomerDto addNewCustomer(CustomerDto customer) {
 		CustPersionalDetail custPersionalDetail = null;
-		if (customer == null)
-			throw new NullPointerException("customer dto is null");
 		custPersionalDetail = new CustPersionalDetail();
-		if (null != customer.getFullName())
-			custPersionalDetail.setFullName(customer.getFullName());
+		custPersionalDetail.setFullName(customer.getFullName());
 		if (null != customer.getShortName())
 			custPersionalDetail.setShortName(customer.getShortName());
 		if (null != customer.getCustType())
@@ -43,7 +39,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 			custPersionalDetail.setPANNo(customer.getPanNo());
 		if (null != customer.getAdharNo())
 			customer.setAdharNo(customer.getAdharNo());
-		CustomerAudit custAudit = new CustomerAudit();
+		/*CustomerAudit custAudit = new CustomerAudit();
 		custAudit.setAction("Created");
 		custAudit.setLastUpdatedDatetime(LocalDateTime.now());
 		custAudit.setLastUpdatedUserDesignation("NA");
@@ -55,7 +51,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 		custAudit.setCustomer(custPersionalDetail);
 		custAudit.setCreatedOnDateTime(LocalDateTime.now());
 		//custPersionalDetail.setCustAudit(custAudit);
-		custPersionalDetail = this.getDaoManager().getCustomerDao().addCustomerDetail(custPersionalDetail);
+		*/custPersionalDetail = this.getDaoManager().getCustomerDao().addCustomerDetail(custPersionalDetail);
 		if (custPersionalDetail == null)
 			throw new NullPointerException("Error while Saving Customer Detail");
 
@@ -73,11 +69,11 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 			 * customer.getAddressDto().getCountry())
 			 * addressDetail.setCountry(customer.getAddressDto().getCountry());
 			 */
-			if (null != customer.getAddress().getZipCode())
+			if (null != customer.getAddress().getZipCode()&&!customer.getAddress().getZipCode().isEmpty())
 				addressDetail.setZipCode(Integer.valueOf(customer.getAddress().getZipCode()));
-			if (null != customer.getAddress().getEmail())
+			if (null != customer.getAddress().getEmail()&&!customer.getAddress().getEmail().isEmpty())
 				addressDetail.setEmail(customer.getAddress().getEmail());
-			if (null != customer.getAddress().getPhoneNo())
+			if (null != customer.getAddress().getPhoneNo()&&!customer.getAddress().getPhoneNo().isEmpty())
 				addressDetail.setMobNo(customer.getAddress().getPhoneNo());
 			addressDetail.setCustomer(custPersionalDetail);
 			addressDetail = this.getDaoManager().getCustomerDao().addCustAddressDetail(addressDetail);

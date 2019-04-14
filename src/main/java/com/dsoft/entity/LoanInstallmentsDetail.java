@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="LOAN_EMI_DETAIL")
-public class LoanEMIDetail implements Serializable {
+public class LoanInstallmentsDetail implements Serializable {
 
 	private static final long serialVersionUID = -2237604786927897877L;
 	@Id

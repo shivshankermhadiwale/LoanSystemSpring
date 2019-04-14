@@ -2,105 +2,163 @@ package com.dsoft.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
-import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class LoanAccountDetailDto implements Serializable {
 
 	private static final long serialVersionUID = -2282881913238864262L;
-	private String loanAccountNo;
-	@JoinColumn(name = "cust_id")
-	private String custId;
-	private String principalAmount;
+	private Long loanAccountNo;
+	@NotNull(message = "custID may not be null")
+	private Long custId;
+	@NotNull(message = "principalAmount may not be null")
+	private Double principalAmount;
+	@NotNull(message = "interest may not be null")
+	private Float interest;
+	@NotNull(message = "interestAmt may not be null")
+	private Double interestAmt;
+	@NotNull(message = "depositeAmt may not be null")
+	private Double depositeAmt;
+	@NotNull(message = "processingFees may not be null")
+	private Double processingFees;
+	@NotNull(message = "loanAmt may not be null")
+	private Double loanAmt;
+	@NotNull(message = "loanStartDate may not be null")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = ISO.DATE_TIME)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
-	private LocalDate loanDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate loanStartDate;
+	@NotNull(message = "loanEndDate may not be null")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = ISO.DATE_TIME)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
-	private LocalDate emiStartDate;
-	private Double emiAmount;
-	private Float loanInterest;
-	private Integer loanTenureInMonths;
-	private Integer loanTenureInYears;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate loanEndDate;
+	@NotNull(message = "installMentType may not be null")
+	@NotBlank(message = "installMentType may not be blank")
+	private String installMentType;
+	@NotNull(message = "installments may not be null")
+	private Integer installments;
+	@NotNull(message = "installmentAmount may not be null")
+	private Double installmentAmount;
+	private String custFullName;
 	private Double totalCollection;
-	private LocalDate loanEndingDate;
+	private List<LoanEMIDetailDto> loanCollections;
 
-	public String getLoanAccountNo() {
+	public Long getLoanAccountNo() {
 		return loanAccountNo;
 	}
 
-	public void setLoanAccountNo(String loanAccountNo) {
+	public void setLoanAccountNo(Long loanAccountNo) {
 		this.loanAccountNo = loanAccountNo;
 	}
 
-	public String getCustId() {
+	public Long getCustId() {
 		return custId;
 	}
 
-	public void setCustId(String custId) {
+	public void setCustId(Long custId) {
 		this.custId = custId;
 	}
 
-	public String getPrincipalAmount() {
+	public Double getPrincipalAmount() {
 		return principalAmount;
 	}
 
-	public void setPrincipalAmount(String principalAmount) {
+	public void setPrincipalAmount(Double principalAmount) {
 		this.principalAmount = principalAmount;
 	}
 
-	public LocalDate getLoanDate() {
-		return loanDate;
+	public Float getInterest() {
+		return interest;
 	}
 
-	public void setLoanDate(LocalDate loanDate) {
-		this.loanDate = loanDate;
+	public void setInterest(Float interest) {
+		this.interest = interest;
 	}
 
-	public LocalDate getEmiStartDate() {
-		return emiStartDate;
+	public Double getInterestAmt() {
+		return interestAmt;
 	}
 
-	public void setEmiStartDate(LocalDate emiStartDate) {
-		this.emiStartDate = emiStartDate;
+	public void setInterestAmt(Double interestAmt) {
+		this.interestAmt = interestAmt;
 	}
 
-	public Double getEmiAmount() {
-		return emiAmount;
+	public Double getDepositeAmt() {
+		return depositeAmt;
 	}
 
-	public void setEmiAmount(Double emiAmount) {
-		this.emiAmount = emiAmount;
+	public void setDepositeAmt(Double depositeAmt) {
+		this.depositeAmt = depositeAmt;
 	}
 
-	public Float getLoanInterest() {
-		return loanInterest;
+	public Double getProcessingFees() {
+		return processingFees;
 	}
 
-	public void setLoanInterest(Float loanInterest) {
-		this.loanInterest = loanInterest;
+	public void setProcessingFees(Double processingFees) {
+		this.processingFees = processingFees;
 	}
 
-	public Integer getLoanTenureInMonths() {
-		return loanTenureInMonths;
+	public Double getLoanAmt() {
+		return loanAmt;
 	}
 
-	public void setLoanTenureInMonths(Integer loanTenureInMonths) {
-		this.loanTenureInMonths = loanTenureInMonths;
+	public void setLoanAmt(Double loanAmt) {
+		this.loanAmt = loanAmt;
 	}
 
-	public Integer getLoanTenureInYears() {
-		return loanTenureInYears;
+	public LocalDate getLoanStartDate() {
+		return loanStartDate;
 	}
 
-	public void setLoanTenureInYears(Integer loanTenureInYears) {
-		this.loanTenureInYears = loanTenureInYears;
+	public void setLoanStartDate(LocalDate loanStartDate) {
+		this.loanStartDate = loanStartDate;
+	}
+
+	public LocalDate getLoanEndDate() {
+		return loanEndDate;
+	}
+
+	public void setLoanEndDate(LocalDate loanEndDate) {
+		this.loanEndDate = loanEndDate;
+	}
+
+	public String getInstallMentType() {
+		return installMentType;
+	}
+
+	public void setInstallMentType(String installMentType) {
+		this.installMentType = installMentType;
+	}
+
+	public Integer getInstallments() {
+		return installments;
+	}
+
+	public void setInstallments(Integer installments) {
+		this.installments = installments;
+	}
+
+	public Double getInstallmentAmount() {
+		return installmentAmount;
+	}
+
+	public void setInstallmentAmount(Double installmentAmount) {
+		this.installmentAmount = installmentAmount;
+	}
+
+	public String getCustFullName() {
+		return custFullName;
+	}
+
+	public void setCustFullName(String custFullName) {
+		this.custFullName = custFullName;
 	}
 
 	public Double getTotalCollection() {
@@ -111,12 +169,12 @@ public class LoanAccountDetailDto implements Serializable {
 		this.totalCollection = totalCollection;
 	}
 
-	public LocalDate getLoanEndingDate() {
-		return loanEndingDate;
+	public List<LoanEMIDetailDto> getLoanCollections() {
+		return loanCollections;
 	}
 
-	public void setLoanEndingDate(LocalDate loanEndingDate) {
-		this.loanEndingDate = loanEndingDate;
+	public void setLoanCollections(List<LoanEMIDetailDto> loanCollections) {
+		this.loanCollections = loanCollections;
 	}
 
 }

@@ -2,10 +2,14 @@ package com.dsoft.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class CustContactPersionDto implements Serializable {
 
 	private static final long serialVersionUID = -134229937167465569L;
 	private Long custId;
+	@NotBlank(message="fullName may not be blank")@NotNull(message="fullName may not be null")
 	private String fullName;
 	private String designation;
 	private AddressDto address = new AddressDto();

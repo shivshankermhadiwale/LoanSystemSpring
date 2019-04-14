@@ -3,9 +3,13 @@ package com.dsoft.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class CustomerDto implements Serializable {
 	private static final long serialVersionUID = 415982864064630044L;
 	private Long custId;
+	@NotBlank(message="fullName May Not Be Empty")@NotNull(message="fullName May Not Be Empty")
 	private String fullName;
 	private String shortName;
 	private Short custType;

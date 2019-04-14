@@ -1,7 +1,9 @@
 package com.dsoft.controller;
 
 import java.util.stream.Collectors;
+
 import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dsoft.dto.CustContactPersionDto;
 import com.dsoft.dto.CustomerDto;
-import com.dsoft.entity.CustPersionalDetail;
 
 @RestController
 @RequestMapping("/customer")
@@ -31,11 +32,12 @@ public class CustomerController extends ControllerManager {
 			throws MethodArgumentNotValidException {
 		logger.info(" : Adding New Customer Process Begins------");
 		if (error.hasErrors())
-			return ResponseEntity.ok(
-					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
+			return new ResponseEntity<>(
+					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()),HttpStatus.NOT_ACCEPTABLE);
 		return new ResponseEntity<>(this.getServiceManager().getCustomerService().addNewCustomer(customer),
 				HttpStatus.ACCEPTED);
 	}
+	
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAllCustomer(){
 		return new ResponseEntity<>(this.getServiceManager().getCustomerService().getAllCustomersLst(),
@@ -48,8 +50,8 @@ public class CustomerController extends ControllerManager {
 			throws MethodArgumentNotValidException {
 		logger.info(" : Adding New Contact Persion Of Customer------");
 		if (error.hasErrors())
-			return ResponseEntity.ok(
-					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
+			return new ResponseEntity<>(
+					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()),HttpStatus.NOT_ACCEPTABLE);
 		return new ResponseEntity<>(this.getServiceManager().getCustomerService().addCustContactPersion(custContact),
 				HttpStatus.ACCEPTED);
 	}
