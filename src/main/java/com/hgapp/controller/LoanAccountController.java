@@ -1,0 +1,96 @@
+package com.hgapp.controller;
+
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hgapp.dto.LoanAccountDetailDto;
+import com.hgapp.dto.LoanEMIDetailDto;
+
+@RestController
+@RequestMapping("/Loan")
+public class LoanAccountController extends ControllerManager {
+	private static final Logger logger = LogManager.getLogger(LoanAccountController.class);
+
+	@PostMapping("/createLoanAccount")
+	public ResponseEntity<?> creatLoanAccount(@RequestBody @Valid LoanAccountDetailDto accountDetail, Errors errors) {
+		logger.info(" : Creating New Loan Account Process Begins------");
+		if (errors.hasErrors())
+			return ResponseEntity.ok(
+					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
+		return ResponseEntity.ok(this.getServiceManager().getAmountService().createLoanNewAccount(accountDetail));
+
+	}
+
+	@GetMapping("/getLoanDetailByLoanId/{loanAccountNo}")
+	public ResponseEntity<?> getLoanDetailByLoanId(@PathVariable Long loanAccountNo) {
+		logger.info(" : Calling Get Loan Detail By CustId and Loan Status Process Begins------");
+		if (loanAccountNo == null)
+			throw new NullPointerException("loanAccountNo May Not Be Null");
+		return ResponseEntity.ok(this.getServiceManager().getAmountService().getLoanDetailByLoanId(loanAccountNo));
+
+	}
+
+	@GetMapping("/getLoanDetailByCustId/{custId}/{loanStatus}")
+	public ResponseEntity<?> getLoanDetailByCustId(@PathVariable String custId, @PathVariable String loanStatus) {
+		logger.info(" : Calling Get Loan Detail By CustId and Loan Status Process Begins------");
+		if (custId == null || loanStatus == null || loanStatus.isEmpty())
+			throw new NullPointerException("CustId/LoanStatus May Not Be Null");
+		return ResponseEntity.ok(this.getServiceManager().getAmountService()
+				.getLoanDetailByCustIdAndStatus(Long.valueOf(custId), loanStatus));
+
+	}
+
+	@PostMapping("/addPayment")
+	public ResponseEntity<?> addPayment(@RequestBody @Valid LoanEMIDetailDto detail, Errors errors) {
+		logger.info(" : Adding Payment Of Customer Process Begins------");
+		if (errors.hasErrors())
+			return ResponseEntity.ok(
+					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
+		return ResponseEntity.ok(this.getServiceManager().getAmountService().addPayment(detail));
+
+	}
+
+	@PostMapping("/closeLoanAccount")
+	public ResponseEntity<?> closeLoanAccoung(@RequestBody String requestBody) throws JSONException {
+		logger.info(" : Closing Loan Account------" + requestBody);
+		if (requestBody == null || requestBody.trim().isEmpty())
+			throw new NullPointerException("Request Body Is Empty");
+		JSONObject jsonNode = new JSONObject(requestBody);
+		String loanStatus = "", remark = "";
+		Long loanId = null;
+		if (jsonNode.has("loanAccountNo"))
+			loanId = Long.valueOf(jsonNode.getString("loanAccountNo"));
+		if (jsonNode.has("loanStatus"))
+			loanStatus = jsonNode.getString("loanStatus");
+		if (jsonNode.has("remark"))
+			remark = jsonNode.getString("remark");
+
+		return ResponseEntity
+				.ok(this.getServiceManager().getAmountService().closeLoanAccount(loanStatus, remark, loanId));
+
+	}
+
+	@GetMapping("/getLoanDetailByStatus/{status}")
+	public ResponseEntity<?> getLoanDetailByStatus(@PathVariable String status) {
+		logger.info(" : Calling Loan Report------");
+		if (status == null || status.isEmpty())
+			throw new NullPointerException("Input Data Missing");
+		return ResponseEntity.ok(this.getServiceManager().getAmountService().getAllLoanAccount(status));
+
+	}
+
+}
