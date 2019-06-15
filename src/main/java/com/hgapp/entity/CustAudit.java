@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "customer_audit")
-public class CustomerAudit implements Serializable {
+public class CustAudit implements Serializable {
 
 	private static final long serialVersionUID = -1373778567616323514L;
 	@Id
@@ -26,7 +26,7 @@ public class CustomerAudit implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cust_id")
 	@JsonIgnore
-	private CustomerDetail customer;
+	private CustDetail customer;
 	private String loggedInUserId;
 	private String userName;
 	private String userDesignation;
@@ -85,11 +85,11 @@ public class CustomerAudit implements Serializable {
 		this.custAuditId = custAuditId;
 	}
 
-	public CustomerDetail getCustomer() {
+	public CustDetail getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerDetail customer) {
+	public void setCustomer(CustDetail customer) {
 		this.customer = customer;
 	}
 

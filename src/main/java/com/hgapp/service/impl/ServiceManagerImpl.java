@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hgapp.service.AuthSerivice;
-import com.hgapp.service.CustomerService;
+import com.hgapp.service.CustService;
 import com.hgapp.service.DownloadService;
-import com.hgapp.service.LoanAmountService;
+import com.hgapp.service.LoanAccountService;
 import com.hgapp.service.ServiceManager;
 
 @Service
 public class ServiceManagerImpl implements ServiceManager {
 	@Autowired
-	private CustomerService customerService;
+	private CustService customerService;
 	/*@Autowired
 	private ItemService itemService;
 	@Autowired
@@ -24,7 +24,7 @@ public class ServiceManagerImpl implements ServiceManager {
 	/*@Autowired
 	private SalesService salesService;*/
 	@Autowired
-	private LoanAmountService amountService;
+	private LoanAccountService loanService;
 	
 /*	public SalesService getSalesService() {
 		return salesService;
@@ -67,20 +67,22 @@ public class ServiceManagerImpl implements ServiceManager {
 		this.itemService = itemService;
 	}*/
 
-	public CustomerService getCustomerService() {
+	public CustService getCustomerService() {
 		return customerService;
 	}
 
-	public void setCustService(CustomerService custService) {
+	public void setCustService(CustService custService) {
 		this.customerService = custService;
 	}
 
-	public LoanAmountService getAmountService() {
-		return amountService;
+	
+
+	public LoanAccountService getLoanService() {
+		return loanService;
 	}
 
-	public void setAmountService(LoanAmountService amountService) {
-		this.amountService = amountService;
+	public void setLoanService(LoanAccountService loanService) {
+		this.loanService = loanService;
 	}
 
 	public DownloadService getDownloadService() {

@@ -1,6 +1,5 @@
 package com.hgapp.service.impl;
 
-import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,7 +16,6 @@ import com.hgapp.controller.ControllerManager;
 import com.hgapp.dto.CustContactPersionDto;
 import com.hgapp.dto.CustomerDto;
 import com.hgapp.service.DownloadService;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -38,7 +36,6 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 
 	@Override
 	public ResponseEntity<?> customerPdfDownload(Long custId) throws IOException {
-		System.out.println("testWSSSS");
 		CustomerDto customerDto = this.getServiceManager().getCustomerService().findCustomerDetailById(custId);
 		List<CustContactPersionDto> contactPersionDtos = this.getServiceManager().getCustomerService()
 				.getCustContactPersionByCustId(custId);

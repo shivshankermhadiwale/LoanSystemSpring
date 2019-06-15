@@ -7,20 +7,24 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hgapp.dao.LoanAmountDao;
-import com.hgapp.entity.CustomerDetail;
+import com.hgapp.dao.LoanAccountDao;
+import com.hgapp.entity.CustDetail;
 import com.hgapp.entity.LoanAccountDetail;
 import com.hgapp.entity.LoanInstallmentsDetail;
+import com.hgapp.entity.LoanPenalty;
 import com.hgapp.repositories.LoanAccountDetailRepo;
 import com.hgapp.repositories.LoanEMIDetailRepo;
+import com.hgapp.repositories.LoanPenaltyRepo;
 
 @Repository
-public class LoanAmountDaoImpl implements LoanAmountDao {
+public class LoanAccountDaoImpl implements LoanAccountDao {
 
 	@Autowired
 	LoanAccountDetailRepo loanAccountDetailRepo;
 	@Autowired
 	LoanEMIDetailRepo loandEMIDetailRepo;
+	@Autowired
+	LoanPenaltyRepo loanPenaltyRepo;
 
 	@Override
 	public LoanAccountDetail createLoanNewAccount(LoanAccountDetail accountDetail) {
@@ -33,7 +37,7 @@ public class LoanAmountDaoImpl implements LoanAmountDao {
 	}
 
 	@Override
-	public List<LoanAccountDetail> getLoanDetailByCustId(CustomerDetail custId) {
+	public List<LoanAccountDetail> getLoanDetailByCustId(CustDetail custId) {
 		return loanAccountDetailRepo.findByCustId(custId);
 	}
 
@@ -54,10 +58,24 @@ public class LoanAmountDaoImpl implements LoanAmountDao {
 
 	@Override
 	public List<LoanAccountDetail> getAllLoanAccount(String status) {
-		if(status.equalsIgnoreCase("All"))
+		if (status.equalsIgnoreCase("All"))
 			return (List<LoanAccountDetail>) loanAccountDetailRepo.findAll();
-			else
-				return loanAccountDetailRepo.findByLoanStatus(status);
+		else
+			return loanAccountDetailRepo.findByLoanStatus(status);
 	}
 
+	@Override
+	public List<LoanInstallmentsDetail> getLoanInstallmentDetailsByPaymentDate(LocalDate paymentDate) {
+		return loandEMIDetailRepo.getInstallmentDetailsByDate(paymentDate);
+	}
+
+	@Override
+	public LoanPenalty addPenalty(LoanPenalty loanPenalty) {
+		return loanPenaltyRepo.save(loanPenalty);
+	}
+
+	@Override
+	public List<LoanPenalty> findDtlByLoanId(LoanAccountDetail accountDetail) {
+		return loanPenaltyRepo.findByLoanAccountId(accountDetail);
+	}
 }

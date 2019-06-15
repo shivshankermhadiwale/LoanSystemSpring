@@ -17,7 +17,7 @@ public class AddressDetail {
 	private Long addressId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "persion_id")
-	private CustomerDetail persion;
+	private CustDetail persion;
 	private String address;
 	private int city;
 	private int district;
@@ -37,11 +37,11 @@ public class AddressDetail {
 		this.addressId = addressId;
 	}
 
-	public CustomerDetail getPersion() {
+	public CustDetail getPersion() {
 		return persion;
 	}
 
-	public void setPersion(CustomerDetail persion) {
+	public void setPersion(CustDetail persion) {
 		this.persion = persion;
 	}
 

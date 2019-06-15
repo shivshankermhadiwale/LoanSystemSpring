@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.hgapp.entity.CustomerDetail;
+import com.hgapp.entity.CustDetail;
 import com.hgapp.entity.LoanAccountDetail;
 
 public interface LoanAccountDetailRepo extends CrudRepository<LoanAccountDetail, Long> {
 
-	public List<LoanAccountDetail> findByCustId(CustomerDetail custId);
+	public List<LoanAccountDetail> findByCustId(CustDetail custId);
 	public List<LoanAccountDetail> findByLoanStatus(String loanStatus);
 
 	@Modifying(clearAutomatically = true)

@@ -10,13 +10,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.logging.log4j.core.config.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(1)
-public class ApplicationFilter implements Filter {
+
+public class RequestFilter implements Filter {
 
 	/*public ApplicationFilter() {
 	

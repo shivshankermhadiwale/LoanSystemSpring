@@ -21,7 +21,7 @@ public class LoanAccountDetail implements Serializable {
 	private Long loanAccountNo;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cust_id")
-	private CustomerDetail custId;
+	private CustDetail custId;
 	private Double principalAmount;
 	private Float interest;
 	private Double interestAmt;
@@ -31,6 +31,8 @@ public class LoanAccountDetail implements Serializable {
 	private LocalDate loanStartDate;
 	private LocalDate loanEndDate;
 	private LocalDate installmentSartDate;
+	private LocalDate paymentDate;
+	private String paymentMode;
 	private String installMentType;
 	private Integer installments;
 	private Double installmentAmount;
@@ -47,11 +49,11 @@ public class LoanAccountDetail implements Serializable {
 		this.loanAccountNo = loanAccountNo;
 	}
 
-	public CustomerDetail getCustId() {
+	public CustDetail getCustId() {
 		return custId;
 	}
 
-	public void setCustId(CustomerDetail custId) {
+	public void setCustId(CustDetail custId) {
 		this.custId = custId;
 	}
 
@@ -181,6 +183,22 @@ public class LoanAccountDetail implements Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public LocalDate getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(LocalDate paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
 	}
 
 }

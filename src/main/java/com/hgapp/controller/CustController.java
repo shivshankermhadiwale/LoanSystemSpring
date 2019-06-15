@@ -27,8 +27,8 @@ import com.hgapp.dto.CustomerDto;
 
 @RestController
 @RequestMapping("/customer")
-public class CustomerController extends ControllerManager {
-	private final Logger logger = LogManager.getLogger(CustomerController.class);
+public class CustController extends ControllerManager {
+	private final Logger logger = LogManager.getLogger(CustController.class);
 
 	@PostMapping("/addNew")
 	public ResponseEntity<?> addNewCustomer(@Valid @RequestBody CustomerDto customer, Errors error)

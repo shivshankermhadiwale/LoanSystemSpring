@@ -1,14 +1,19 @@
 package com.hgapp.dto;
 
+import java.io.Serializable;
 
-public class AuthDetailsDto {
+public class AuthDetailsDto implements Serializable {
 
+	private static final long serialVersionUID = -1014193388339967757L;
 	private String userName;
 	private String password;
 	private int token;
 	private String status;
 	private String jwtToken;
-	
+	private Long roleId;
+	private Long userId;
+	private String loggedInUserIpAddress;
+
 	public String getStatus() {
 		return status;
 	}
@@ -48,5 +53,29 @@ public class AuthDetailsDto {
 	public void setJwtToken(String jwtToken) {
 		this.jwtToken = jwtToken;
 	}
-	
+
+	public Long getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getLoggedInUserIpAddress() {
+		return loggedInUserIpAddress;
+	}
+
+	public void setLoggedInUserIpAddress(String loggedInUserIpAddress) {
+		this.loggedInUserIpAddress = loggedInUserIpAddress;
+	}
+
 }

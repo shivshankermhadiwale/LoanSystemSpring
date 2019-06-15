@@ -15,15 +15,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("com.hgapp")
 @EntityScan("com.hgapp.entity")
 //@EnableZuulProxy
-public class HGApplication extends SpringBootServletInitializer {
+public class AppStarter extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(HGApplication.class);
+		return application.sources(AppStarter.class);
 	}
 
 	
 	public static void main(String[] args) {
-		SpringApplication.run(HGApplication.class, args);
+		SpringApplication.run(AppStarter.class, args);
 	}
 	
 	/*@Bean

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Customer_Detail")
-public class CustomerDetail implements Serializable {
+public class CustDetail implements Serializable {
 	private static final long serialVersionUID = 1288664445708805109L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

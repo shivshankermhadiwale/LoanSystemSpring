@@ -7,18 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
-import com.hgapp.dao.CustomerDao;
+import com.hgapp.dao.CustDao;
 import com.hgapp.entity.AddressDetail;
 import com.hgapp.entity.ContactPersion;
-import com.hgapp.entity.CustomerDetail;
-import com.hgapp.entity.CustomerAudit;
+import com.hgapp.entity.CustDetail;
+import com.hgapp.entity.CustAudit;
 import com.hgapp.repositories.AddressRepo;
 import com.hgapp.repositories.ContactPersionRepo;
 
 import com.hgapp.repositories.CustomerRepo;
 
 @Repository
-public class CustomerDaoImpl implements CustomerDao {
+public class CustDaoImpl implements CustDao {
 	@Autowired
 	CustomerRepo customerRepo;
 	@Autowired
@@ -30,7 +30,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	ContactPersionRepo custContactpersionRepo;
 
 	@Override
-	public CustomerDetail addCustomerDetail(CustomerDetail custMaster) {
+	public CustDetail addCustomerDetail(CustDetail custMaster) {
 		try {
 			return customerRepo.save(custMaster);
 		}catch(DuplicateKeyException ex) {
@@ -38,7 +38,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 	}
 
-	public Optional<CustomerDetail> findCustomerDetailById(Long custId) {
+	public Optional<CustDetail> findCustomerDetailById(Long custId) {
 		return customerRepo.findById(custId);
 	}
 
@@ -67,18 +67,18 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public List<ContactPersion> getCustContactPersionByCustPersionalDetail(
-			CustomerDetail custPersionalDetail) {
+			CustDetail custPersionalDetail) {
 		return custContactpersionRepo.getCustContactPersionByPersionId(custPersionalDetail);
 	}
 
 	@Override
-	public List<CustomerDetail> getAllCustomersLst() {
-		return (List<CustomerDetail>) customerRepo.findAll();
+	public List<CustDetail> getAllCustomersLst() {
+		return (List<CustDetail>) customerRepo.findAll();
 
 	}
 
 	@Override
-	public AddressDetail getCustAddDetailByCustId(CustomerDetail custPersionalDetail) {
+	public AddressDetail getCustAddDetailByCustId(CustDetail custPersionalDetail) {
 		return custAddressRepo.getCustAddressDetailByPersion(custPersionalDetail);
 	}
 

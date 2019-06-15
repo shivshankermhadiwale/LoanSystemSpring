@@ -5,17 +5,17 @@ import java.util.Optional;
 
 import com.hgapp.entity.AddressDetail;
 import com.hgapp.entity.ContactPersion;
-import com.hgapp.entity.CustomerDetail;
-import com.hgapp.entity.CustomerAudit;
+import com.hgapp.entity.CustDetail;
+import com.hgapp.entity.CustAudit;
 
-public interface CustomerDao {
-	public CustomerDetail addCustomerDetail(CustomerDetail custMaster);
+public interface CustDao {
+	public CustDetail addCustomerDetail(CustDetail custMaster);
 
-	public Optional<CustomerDetail> findCustomerDetailById(Long custId);
+	public Optional<CustDetail> findCustomerDetailById(Long custId);
 
 	public int deleteCustomer(Long custId, boolean action);
 
-	public List<CustomerDetail> getAllCustomersLst();
+	public List<CustDetail> getAllCustomersLst();
 
 	/*public CustomerAudit findByCustomer(PersionDetail cusomer);*/
 /*
@@ -23,10 +23,10 @@ public interface CustomerDao {
 
 	public AddressDetail addCustAddressDetail(AddressDetail custAddressDetail);
 
-	public AddressDetail getCustAddDetailByCustId(CustomerDetail custPersionalDetail);
+	public AddressDetail getCustAddDetailByCustId(CustDetail custPersionalDetail);
 
 	public ContactPersion addCustContactPersion(ContactPersion contactPersions);
 
-	public List<ContactPersion> getCustContactPersionByCustPersionalDetail(CustomerDetail custPersionalDetail);
+	public List<ContactPersion> getCustContactPersionByCustPersionalDetail(CustDetail custPersionalDetail);
 
 }

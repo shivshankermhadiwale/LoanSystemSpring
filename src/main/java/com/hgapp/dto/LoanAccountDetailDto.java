@@ -49,6 +49,8 @@ public class LoanAccountDetailDto implements Serializable {
 	private Double totalCollection;
 	private String loanStatus;
 	private String remark;
+	private String paymentDate;
+	private String paymentMode;
 	private List<LoanEMIDetailDto> loanCollections;
 
 	public Long getLoanAccountNo() {
@@ -194,6 +196,23 @@ public class LoanAccountDetailDto implements Serializable {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+
+	public String getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(String paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
+	}
+	
 	
 	
 	

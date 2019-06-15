@@ -14,19 +14,19 @@ import com.hgapp.dto.CustContactPersionDto;
 import com.hgapp.dto.CustomerDto;
 import com.hgapp.entity.AddressDetail;
 import com.hgapp.entity.ContactPersion;
-import com.hgapp.entity.CustomerDetail;
+import com.hgapp.entity.CustDetail;
 import com.hgapp.exception.RecordNotFound;
-import com.hgapp.service.CustomerService;
+import com.hgapp.service.CustService;
 import com.hgapp.service.DaoServicess;
 
 @Transactional
 @Service
-public class CustomerServiceImpl extends DaoServicess implements CustomerService,AppContstants {
+public class CustomerServiceImpl extends DaoServicess implements CustService,AppContstants {
 
 	@Override
 	public CustomerDto addNewCustomer(CustomerDto customer) {
-		CustomerDetail custPersionalDetail = null;
-		custPersionalDetail = new CustomerDetail();
+		CustDetail custPersionalDetail = null;
+		custPersionalDetail = new CustDetail();
 		custPersionalDetail.setFullName(customer.getFullName().trim());
 		if (null != customer.getShortName())
 			custPersionalDetail.setShortName(customer.getShortName());
@@ -88,7 +88,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 
 	@Override
 	public CustomerDto findCustomerDetailById(Long custId) {
-		Optional<CustomerDetail> customerEntity = this.getDaoManager().getCustomerDao()
+		Optional<CustDetail> customerEntity = this.getDaoManager().getCustomerDao()
 				.findCustomerDetailById(custId);
 		if (!customerEntity.isPresent())
 			throw new RecordNotFound("Customer Not Found");
@@ -154,7 +154,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 	public CustContactPersionDto addCustContactPersion(CustContactPersionDto contactPersionDto) {
 		if (null == contactPersionDto || contactPersionDto.getCustId() == null)
 			throw new NullPointerException("Data Missing");
-		Optional<CustomerDetail> custPersionalDetail = this.getDaoManager().getCustomerDao()
+		Optional<CustDetail> custPersionalDetail = this.getDaoManager().getCustomerDao()
 				.findCustomerDetailById(contactPersionDto.getCustId());
 		if (!custPersionalDetail.isPresent())
 			throw new UsernameNotFoundException("Customer Not Found");
@@ -166,8 +166,11 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 		if (contactPersionDto.getAddress() != null) {
 			if (null != contactPersionDto.getAddress().getPhoneNo())
 				contactPersions.setPhone1(contactPersionDto.getAddress().getPhoneNo());
-			if (null != contactPersionDto.getAddress().getEmail())
-				contactPersions.setEmail(contactPersionDto.getAddress().getEmail());
+			/*if (null != contactPersionDto.getAddress().getEmail())
+				contactPersions.setEmail(contactPersionDto.getAddress().getEmail());*/
+			if (null != contactPersionDto.getAddress().getAddress())
+				contactPersions.setAddress(contactPersionDto.getAddress().getAddress());
+		
 		}
 
 		contactPersions.setPersionId(custPersionalDetail.get());
@@ -183,7 +186,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 	public List<CustContactPersionDto> getCustContactPersionByCustId(Long custId) {
 		if (null == custId)
 			throw new NullPointerException("Data Missing");
-		Optional<CustomerDetail> custPersionalDetail = this.getDaoManager().getCustomerDao()
+		Optional<CustDetail> custPersionalDetail = this.getDaoManager().getCustomerDao()
 				.findCustomerDetailById(custId);
 		if (!custPersionalDetail.isPresent())
 			throw new UsernameNotFoundException("Customer Not Found");
@@ -194,7 +197,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 					contactPersionDto.setFullName(data.getFullName());
 					contactPersionDto.setCustId(data.getPersionId().getCustId());
 					contactPersionDto.setDesignation(data.getDesignation());
-					contactPersionDto.getAddress().setEmail(data.getEmail());
+					contactPersionDto.getAddress().setAddress(data.getAddress());
 					contactPersionDto.getAddress().setPhoneNo(data.getPhone1());
 					return contactPersionDto;
 				}).collect(Collectors.toList());
@@ -202,7 +205,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustomerService
 	}
 
 	@Override
-	public List<CustomerDetail> getAllCustomersLst() {
+	public List<CustDetail> getAllCustomersLst() {
 		return this.getDaoManager().getCustomerDao().getAllCustomersLst();
 	}
 

@@ -4,16 +4,16 @@ import java.util.List;
 
 import com.hgapp.dto.CustContactPersionDto;
 import com.hgapp.dto.CustomerDto;
-import com.hgapp.entity.CustomerDetail;
+import com.hgapp.entity.CustDetail;
 
-public interface CustomerService {
+public interface CustService {
 	public CustomerDto addNewCustomer(CustomerDto customer);
 
 	public CustomerDto findCustomerDetailById(Long custId);
 
 	public String deleteCustomer(Long custId);
 
-	public List<CustomerDetail> getAllCustomersLst();
+	public List<CustDetail> getAllCustomersLst();
 
 	public CustContactPersionDto addCustContactPersion(CustContactPersionDto contactPersionDto);
 

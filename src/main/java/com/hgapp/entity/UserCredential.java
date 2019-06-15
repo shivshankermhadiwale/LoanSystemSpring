@@ -1,5 +1,6 @@
 package com.hgapp.entity;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,13 +16,15 @@ public class UserCredential {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userId")
 	private Long userId;
-	@Column(name = "userName",length = 20,unique=true)
+	@Column(name = "userName", length = 20, unique = true)
 	private String userName;
 	@Column(name = "password")
 	private String password;
 	@Column(name = "token")
 	private Integer token;
 	private LocalTime tokenTime;
+	private LocalDateTime lastLoginTime;
+	private String loggedInUserIpAddress;
 
 	public Long getUserId() {
 		return userId;
@@ -61,6 +64,22 @@ public class UserCredential {
 
 	public void setToken(Integer token) {
 		this.token = token;
+	}
+
+	public LocalDateTime getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(LocalDateTime lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+	public String getLoggedInUserIpAddress() {
+		return loggedInUserIpAddress;
+	}
+
+	public void setLoggedInUserIpAddress(String loggedInUserIpAddress) {
+		this.loggedInUserIpAddress = loggedInUserIpAddress;
 	}
 
 }

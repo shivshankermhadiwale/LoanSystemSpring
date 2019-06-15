@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.hgapp.entity.CustomerDetail;
+import com.hgapp.entity.CustDetail;
 
-public interface CustomerRepo extends CrudRepository<CustomerDetail, Long> {
+public interface CustomerRepo extends CrudRepository<CustDetail, Long> {
 	@Modifying(clearAutomatically=true)
-	@Query("update CustomerDetail cust SET cust.isDeleted=:action where cust.custId=:custId")
+	@Query("update CustDetail cust SET cust.isDeleted=:action where cust.custId=:custId")
 	public int deleteCustomer(@Param("custId")Long custId,@Param("action")boolean action);
 }

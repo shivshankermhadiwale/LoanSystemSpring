@@ -1,7 +1,7 @@
 package com.hgapp.service;
 
 public interface ServiceManager {
-	public CustomerService getCustomerService();
+	public CustService getCustomerService();
 
 	/*
 	 * public ItemService getItemService();
@@ -15,7 +15,7 @@ public interface ServiceManager {
 
 	/* public SalesService getSalesService(); */
 
-	public LoanAmountService getAmountService();
+	public LoanAccountService getLoanService();
 
 	public DownloadService getDownloadService();
 }

@@ -17,18 +17,18 @@ public class ContactPersion {
 	private Long contactPersionId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "persion_id")
-	private CustomerDetail persionId;
+	private CustDetail persionId;
 	private String fullName;
+	private String address;
 	private String designation;
 	private String email;
 	private String phone1;
 
-
-	public CustomerDetail getPersionId() {
+	public CustDetail getPersionId() {
 		return persionId;
 	}
 
-	public void setPersionId(CustomerDetail persionId) {
+	public void setPersionId(CustDetail persionId) {
 		this.persionId = persionId;
 	}
 
@@ -71,6 +71,13 @@ public class ContactPersion {
 	public void setPhone1(String phone1) {
 		this.phone1 = phone1;
 	}
-	
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 }
