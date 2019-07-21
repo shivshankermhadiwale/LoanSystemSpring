@@ -18,4 +18,6 @@ public interface ServiceManager {
 	public LoanAccountService getLoanService();
 
 	public DownloadService getDownloadService();
+
+	public ExpenseService getExpenseService();
 }

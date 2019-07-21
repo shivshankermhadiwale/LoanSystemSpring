@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.hgapp.dao.AuthDao;
 import com.hgapp.dao.CustDao;
 import com.hgapp.dao.DaoManger;
+import com.hgapp.dao.ExpenseDao;
+import com.hgapp.dao.FDAccountDao;
 import com.hgapp.dao.LoanAccountDao;
 import com.hgapp.dao.UserRoleDao;
 
@@ -31,6 +33,11 @@ public class DaoMangerImpl implements DaoManger {
 	 */
 	@Autowired
 	private LoanAccountDao loanSectionDao;
+
+	@Autowired
+	private ExpenseDao expenseDao;
+	@Autowired
+	private FDAccountDao fdAccountDao;
 
 	/*
 	 * public SalesDao getSalesDao() { return salesDao; }
@@ -92,5 +99,22 @@ public class DaoMangerImpl implements DaoManger {
 	public void setUserRole(UserRoleDao userRole) {
 		this.userRole = userRole;
 	}
+
+	public ExpenseDao getExpenseDao() {
+		return expenseDao;
+	}
+
+	public void setExpenseDao(ExpenseDao expenseDao) {
+		this.expenseDao = expenseDao;
+	}
+
+	public FDAccountDao getFdAccountDao() {
+		return fdAccountDao;
+	}
+
+	public void setFdAccountDao(FDAccountDao fdAccountDao) {
+		this.fdAccountDao = fdAccountDao;
+	}
+	
 
 }

@@ -3,6 +3,7 @@ package com.hgapp.service.impl;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.hgapp.controller.ControllerManager;
 import com.hgapp.dto.CustContactPersionDto;
 import com.hgapp.dto.CustomerDto;
+import com.hgapp.dto.LoanRepoDto;
 import com.hgapp.service.DownloadService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -44,6 +46,62 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 		headers.add("Content-Disposition", "inline; filename=" + "customer_" + customerDto.getFullName() + ".pdf");
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(bis));
+	}
+	
+	@Override
+	public ResponseEntity<?> downloandLoanAccounts(String status) {
+		List<LoanRepoDto> loanRepolst=this.getServiceManager().getLoanService().getAllLoanAccount(status);
+		ByteArrayInputStream bis = generateLoanAccountsPdf(loanRepolst);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "inline; filename=" + "LoanReport_" + LocalDate.now()+ ".pdf");
+		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+				.body(new InputStreamResource(bis));
+	
+	}
+	
+	private ByteArrayInputStream generateLoanAccountsPdf(List<LoanRepoDto> loanRepolst) {
+
+		Document document = new Document(PageSize.A4, 0, 0, 50, 50);
+		Font tableHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 14f, Font.BOLD);
+		Font tableColHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12f, Font.BOLD);
+		Font leftColumnHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 10f, Font.NORMAL);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+		try {
+
+			PdfPTable loanDtlstable = createPdfTable(8,new float[] {20,10,10,10,10,10,10,10},1);
+			loanDtlstable.addCell(getCell("Loan Accounts", 8, tableHeadingFont));
+			loanDtlstable.addCell(getCell("Customer Name", 0, tableColHeadingFont));
+			loanDtlstable.addCell(getCell("Account No.", 0, tableColHeadingFont));
+			loanDtlstable.addCell(getCell("Principal Amt", 0, tableColHeadingFont));
+			loanDtlstable.addCell(getCell("Loan Amt", 0, tableColHeadingFont));
+			loanDtlstable.addCell(getCell("Collection", 0, tableColHeadingFont));
+			loanDtlstable.addCell(getCell("Remaing Collection", 0, tableColHeadingFont));
+			loanDtlstable.addCell(getCell("Disbursement Date", 0, tableColHeadingFont));
+			loanDtlstable.addCell(getCell("Ending Date", 0, tableColHeadingFont));
+			PdfWriter.getInstance(document, out);
+			if (loanRepolst != null && loanRepolst.size() > 0) {
+				loanRepolst.stream().forEach(data -> {
+					loanDtlstable.addCell(getCell(data.getFullName(), 0, leftColumnHeadingFont));
+					loanDtlstable.addCell(getCell(String.valueOf(data.getLoanAccountNo()), 0, leftColumnHeadingFont));
+					loanDtlstable.addCell(getCell(String.valueOf(data.getPrincipalAmount()), 0, leftColumnHeadingFont));
+					loanDtlstable.addCell(getCell(String.valueOf(data.getLoanAmt()), 0, leftColumnHeadingFont));
+					loanDtlstable.addCell(getCell(data.getTotalCollection()==null?"":String.valueOf(data.getTotalCollection()), 0, leftColumnHeadingFont));
+					loanDtlstable.addCell(getCell(data.getRemainCollection()==null?"":String.valueOf(data.getRemainCollection()), 0, leftColumnHeadingFont));
+					loanDtlstable.addCell(getCell(data.getPaymentDate()==null?"":String.valueOf(data.getPaymentDate()), 0, leftColumnHeadingFont));
+					loanDtlstable.addCell(getCell(data.getLoanEndigDate()==null?"":String.valueOf(data.getLoanEndigDate()), 0, leftColumnHeadingFont));
+				
+				});
+			}
+			document.open();
+			document.add(loanDtlstable);
+			document.close();
+
+		} catch (DocumentException ex) {
+			
+		}
+
+		return new ByteArrayInputStream(out.toByteArray());
 	}
 
 	private ByteArrayInputStream generatePdf(CustomerDto customerDto, List<CustContactPersionDto> contactPersionDtos) {
@@ -126,5 +184,7 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 		paragraph.setAlignment(Element.ALIGN_RIGHT);
 		return paragraph;
 	}
+
+	
 
 }

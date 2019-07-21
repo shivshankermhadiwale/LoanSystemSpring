@@ -17,7 +17,7 @@ public class CustDetail implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long custId;
-	@Column(unique=true)
+	@Column(unique = true)
 	private String fullName;
 	private String shortName;
 	private Short custType;
@@ -25,6 +25,7 @@ public class CustDetail implements Serializable {
 	private LocalDate registrationDate;
 	private String GSTINNo;
 	private String PANNo;
+	private String professionName;
 	private String adharNo;
 	private Boolean isDeleted = false;
 	private LocalDate lastUpdate;
@@ -109,8 +110,6 @@ public class CustDetail implements Serializable {
 		this.lastUpdate = lastUpdate;
 	}
 
-	
-
 	public Long getCustId() {
 		return custId;
 	}
@@ -123,6 +122,11 @@ public class CustDetail implements Serializable {
 		return serialVersionUID;
 	}
 
-	
+	public String getProfessionName() {
+		return professionName;
+	}
 
+	public void setProfessionName(String professionName) {
+		this.professionName = professionName;
+	}
 }

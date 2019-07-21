@@ -1,5 +1,6 @@
 package com.hgapp.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.hgapp.dto.DashBoardRepo;
@@ -19,6 +20,8 @@ public interface LoanAccountService {
 
 	public List<LoanAccountDetailDto> getLoanDetailByCustIdAndStatus(Long custId, String status);
 
+	public List<LoanRepoDto> getLoanDisbursedByStatus(String status);
+
 	public int closeLoanAccount(String status, String remark, Long loanAccountNo);
 
 	public LoanPaymentDetailDto addLoanPaymentDtl(LoanPaymentDetailDto paymentDetailDto);
@@ -34,4 +37,7 @@ public interface LoanAccountService {
 	public LoanPenaltyDto addPenalty(LoanPenaltyDto loanPenaltyDto);
 
 	public List<LoanPenaltyDto> findDtlByLoanId(Long accountId);
+
+	public List<LoanCollectionRepo> getAllLoanInstallmentsByDate(LocalDate fromDate, LocalDate toDate);
+
 }

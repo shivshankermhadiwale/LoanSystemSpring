@@ -12,8 +12,10 @@ public class LoanRepoDto implements Serializable {
 	private Double remainCollection;
 	private String loanEndigDate;
 	private String loanStatus;
+	private String paymentDate;
+	private String paymentMode;
 	private Double principalAmount;
-	
+	private Double disburseAmt;
 
 	public String getFullName() {
 		return fullName;
@@ -78,6 +80,29 @@ public class LoanRepoDto implements Serializable {
 	public void setPrincipalAmount(Double principalAmount) {
 		this.principalAmount = principalAmount;
 	}
-	
+
+	public String getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(String paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
+	}
+
+	public Double getDisburseAmt() {
+		return disburseAmt;
+	}
+
+	public void setDisburseAmt(Double disburseAmt) {
+		this.disburseAmt = disburseAmt;
+	}
 
 }

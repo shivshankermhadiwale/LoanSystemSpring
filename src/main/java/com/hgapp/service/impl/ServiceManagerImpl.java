@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.hgapp.service.AuthSerivice;
 import com.hgapp.service.CustService;
 import com.hgapp.service.DownloadService;
+import com.hgapp.service.ExpenseService;
 import com.hgapp.service.LoanAccountService;
 import com.hgapp.service.ServiceManager;
 
@@ -25,6 +26,8 @@ public class ServiceManagerImpl implements ServiceManager {
 	private SalesService salesService;*/
 	@Autowired
 	private LoanAccountService loanService;
+	@Autowired
+	private ExpenseService expenseService;
 	
 /*	public SalesService getSalesService() {
 		return salesService;
@@ -92,7 +95,12 @@ public class ServiceManagerImpl implements ServiceManager {
 	public void setDownloadService(DownloadService downloadService) {
 		this.downloadService = downloadService;
 	}
-	
-	
-	
+
+	public ExpenseService getExpenseService() {
+		return expenseService;
+	}
+
+	public void setExpenseService(ExpenseService expenseService) {
+		this.expenseService = expenseService;
+	}
 }

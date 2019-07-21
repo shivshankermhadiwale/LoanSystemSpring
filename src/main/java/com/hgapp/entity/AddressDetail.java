@@ -19,6 +19,7 @@ public class AddressDetail {
 	@JoinColumn(name = "persion_id")
 	private CustDetail persion;
 	private String address;
+	private String nativePlace;
 	private int city;
 	private int district;
 	private int state;
@@ -125,6 +126,12 @@ public class AddressDetail {
 		this.phoneNo2 = phoneNo2;
 	}
 
-	
+	public String getNativePlace() {
+		return nativePlace;
+	}
+
+	public void setNativePlace(String nativePlace) {
+		this.nativePlace = nativePlace;
+	}
 
 }

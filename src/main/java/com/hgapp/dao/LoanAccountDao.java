@@ -14,6 +14,8 @@ public interface LoanAccountDao {
 
 	public Optional<LoanAccountDetail> getLoanAccountDetailByLoanId(Long loanAccid);
 
+	public List<LoanInstallmentsDetail> getAllLoanInstallmentsByDate(LocalDate fromDate, LocalDate toDate);
+
 	public LoanInstallmentsDetail addPayment(LoanInstallmentsDetail emiDetail);
 
 	public List<LoanInstallmentsDetail> getLoanInstallmentsByLoanId(LoanAccountDetail loanAccountDetail);

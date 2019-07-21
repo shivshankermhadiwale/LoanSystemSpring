@@ -8,6 +8,7 @@ public class DashBoardRepo implements Serializable {
 	private Long totalOpenedLoanAccount;
 	private Double totalRunningLoanAmt;
 	private Double pendingCollections;
+	private Double todayTotalCollection;
 
 	public Double getTotalActiveLoanCollection() {
 		return totalActiveLoanCollection;
@@ -39,6 +40,14 @@ public class DashBoardRepo implements Serializable {
 
 	public void setPendingCollections(Double pendingCollections) {
 		this.pendingCollections = pendingCollections;
+	}
+
+	public Double getTodayTotalCollection() {
+		return todayTotalCollection;
+	}
+
+	public void setTodayTotalCollection(Double todayTotalCollection) {
+		this.todayTotalCollection = todayTotalCollection;
 	}
 
 }

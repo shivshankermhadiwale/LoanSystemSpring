@@ -49,6 +49,7 @@ public class LoanAccountDetailDto implements Serializable {
 	private Double totalCollection;
 	private String loanStatus;
 	private String remark;
+	private Double disburseAmt;
 	private String paymentDate;
 	private String paymentMode;
 	private List<LoanEMIDetailDto> loanCollections;
@@ -212,8 +213,12 @@ public class LoanAccountDetailDto implements Serializable {
 	public void setPaymentMode(String paymentMode) {
 		this.paymentMode = paymentMode;
 	}
-	
-	
-	
-	
+
+	public Double getDisburseAmt() {
+		return disburseAmt;
+	}
+
+	public void setDisburseAmt(Double disburseAmt) {
+		this.disburseAmt = disburseAmt;
+	}
 }

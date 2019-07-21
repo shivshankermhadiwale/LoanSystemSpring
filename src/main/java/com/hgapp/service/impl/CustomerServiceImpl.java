@@ -21,7 +21,7 @@ import com.hgapp.service.DaoServicess;
 
 @Transactional
 @Service
-public class CustomerServiceImpl extends DaoServicess implements CustService,AppContstants {
+public class CustomerServiceImpl extends DaoServicess implements CustService, AppContstants {
 
 	@Override
 	public CustomerDto addNewCustomer(CustomerDto customer) {
@@ -32,13 +32,15 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 			custPersionalDetail.setShortName(customer.getShortName());
 		if (null != customer.getCustType())
 			custPersionalDetail.setCustType(customer.getCustType());
+		if (null != customer.getProfessionName())
+			custPersionalDetail.setProfessionName(customer.getProfessionName());
 		if (null != customer.getGstnNo())
 			custPersionalDetail.setGSTINNo(customer.getGstnNo());
 		if (null != customer.getPanNo())
 			custPersionalDetail.setPANNo(customer.getPanNo());
 		if (null != customer.getAdharNo())
 			custPersionalDetail.setAdharNo(customer.getAdharNo());
-		
+
 		/*
 		 * CustomerAudit custAudit = new CustomerAudit();
 		 * custAudit.setAction("Created");
@@ -50,10 +52,9 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 		 * custAudit.setCreatedOnDateTime(LocalDateTime.now());
 		 * //custPersionalDetail.setCustAudit(custAudit);
 		 */
-		
-			custPersionalDetail = this.getDaoManager().getCustomerDao().addCustomerDetail(custPersionalDetail);
-		
-	
+
+		custPersionalDetail = this.getDaoManager().getCustomerDao().addCustomerDetail(custPersionalDetail);
+
 		if (custPersionalDetail == null)
 			throw new NullPointerException("Error while Saving Customer Detail");
 
@@ -77,6 +78,8 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 				addressDetail.setEmail(customer.getAddress().getEmail());
 			if (null != customer.getAddress().getPhoneNo() && !customer.getAddress().getPhoneNo().isEmpty())
 				addressDetail.setPhoneNo1(customer.getAddress().getPhoneNo());
+			if (null != customer.getAddress().getNativePlace() && !customer.getAddress().getNativePlace().isEmpty())
+				addressDetail.setNativePlace(customer.getAddress().getNativePlace());
 			addressDetail.setPersion(custPersionalDetail);
 			addressDetail = this.getDaoManager().getCustomerDao().addCustAddressDetail(addressDetail);
 
@@ -88,8 +91,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 
 	@Override
 	public CustomerDto findCustomerDetailById(Long custId) {
-		Optional<CustDetail> customerEntity = this.getDaoManager().getCustomerDao()
-				.findCustomerDetailById(custId);
+		Optional<CustDetail> customerEntity = this.getDaoManager().getCustomerDao().findCustomerDetailById(custId);
 		if (!customerEntity.isPresent())
 			throw new RecordNotFound("Customer Not Found");
 		CustomerDto customerDto = new CustomerDto();
@@ -98,15 +100,17 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 			customerDto.setShortName(customerEntity.get().getShortName());
 		if (null != customerEntity.get().getCustType())
 			customerDto.setCustType(customerEntity.get().getCustType());
+		if (null != customerEntity.get().getProfessionName())
+			customerDto.setProfessionName(customerEntity.get().getProfessionName());
 		/*
 		 * if (null != customerEntity.get().getGstnNo())
 		 * customerDto.setGSTINNo(customer.getGstnNo());
 		 */
 		customerDto.setCustId(customerEntity.get().getCustId());
-		
-		  if (null != customerEntity.get().getPANNo())
-		  customerDto.setPanNo(customerEntity.get().getPANNo());
-		 
+
+		if (null != customerEntity.get().getPANNo())
+			customerDto.setPanNo(customerEntity.get().getPANNo());
+
 		if (null != customerEntity.get().getAdharNo())
 			customerDto.setAdharNo(customerEntity.get().getAdharNo());
 		AddressDetail custAddressDetail = this.getDaoManager().getCustomerDao()
@@ -127,6 +131,8 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 		customerDto.getAddress().setZipCode(String.valueOf(custAddressDetail.getZipCode()));
 		if (null != custAddressDetail.getEmail())
 			customerDto.getAddress().setEmail(custAddressDetail.getEmail());
+		if (null != custAddressDetail.getNativePlace())
+			customerDto.getAddress().setNativePlace(custAddressDetail.getNativePlace());
 		if (null != custAddressDetail.getPhoneNo1())
 			customerDto.getAddress().setPhoneNo(custAddressDetail.getPhoneNo1());
 		return customerDto;
@@ -134,19 +140,18 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 
 	@Override
 	public String deleteCustomer(Long custId) {
-	/*	if (this.getDaoManager().getCustomerDao().deleteCustomer(custId, true) == 1) {
-			PersionDetail cust = new PersionDetail();
-			cust.setPersionId(custId);
-			CustomerAudit custAudit = this.getDaoManager().getCustomerDao().findByCustomer(cust);
-			custAudit.setLastUpdatedDatetime(LocalDateTime.now());
-			custAudit.setLastUpdatedUserDesignation("NA");
-			custAudit.setLastUpdatedUserName("LastUsername");
-			custAudit.setLoggedInUserId("1");
-			custAudit.setAction("Deleted");
-			this.getDaoManager().getCustomerDao().saveCustomerAudit(custAudit);
-			return "Success";
-		}
-		return "Fail";*/
+		/*
+		 * if (this.getDaoManager().getCustomerDao().deleteCustomer(custId, true) == 1)
+		 * { PersionDetail cust = new PersionDetail(); cust.setPersionId(custId);
+		 * CustomerAudit custAudit =
+		 * this.getDaoManager().getCustomerDao().findByCustomer(cust);
+		 * custAudit.setLastUpdatedDatetime(LocalDateTime.now());
+		 * custAudit.setLastUpdatedUserDesignation("NA");
+		 * custAudit.setLastUpdatedUserName("LastUsername");
+		 * custAudit.setLoggedInUserId("1"); custAudit.setAction("Deleted");
+		 * this.getDaoManager().getCustomerDao().saveCustomerAudit(custAudit); return
+		 * "Success"; } return "Fail";
+		 */
 		return null;
 	}
 
@@ -166,11 +171,13 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 		if (contactPersionDto.getAddress() != null) {
 			if (null != contactPersionDto.getAddress().getPhoneNo())
 				contactPersions.setPhone1(contactPersionDto.getAddress().getPhoneNo());
-			/*if (null != contactPersionDto.getAddress().getEmail())
-				contactPersions.setEmail(contactPersionDto.getAddress().getEmail());*/
+			/*
+			 * if (null != contactPersionDto.getAddress().getEmail())
+			 * contactPersions.setEmail(contactPersionDto.getAddress().getEmail());
+			 */
 			if (null != contactPersionDto.getAddress().getAddress())
 				contactPersions.setAddress(contactPersionDto.getAddress().getAddress());
-		
+
 		}
 
 		contactPersions.setPersionId(custPersionalDetail.get());
@@ -186,8 +193,7 @@ public class CustomerServiceImpl extends DaoServicess implements CustService,App
 	public List<CustContactPersionDto> getCustContactPersionByCustId(Long custId) {
 		if (null == custId)
 			throw new NullPointerException("Data Missing");
-		Optional<CustDetail> custPersionalDetail = this.getDaoManager().getCustomerDao()
-				.findCustomerDetailById(custId);
+		Optional<CustDetail> custPersionalDetail = this.getDaoManager().getCustomerDao().findCustomerDetailById(custId);
 		if (!custPersionalDetail.isPresent())
 			throw new UsernameNotFoundException("Customer Not Found");
 		List<CustContactPersionDto> contactPersion = null;

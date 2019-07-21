@@ -18,6 +18,7 @@ public class CustomerDto implements Serializable {
 	private String gstnNo;
 	private String panNo;
 	private String adharNo;
+	private String professionName;
 	private AddressDto address = new AddressDto();
 	
 
@@ -100,5 +101,14 @@ public class CustomerDto implements Serializable {
 	public void setAddress(AddressDto address) {
 		this.address = address;
 	}
+
+	public String getProfessionName() {
+		return professionName;
+	}
+
+	public void setProfessionName(String professionName) {
+		this.professionName = professionName;
+	}
+	
 
 }

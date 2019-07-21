@@ -31,6 +31,7 @@ public class LoanAccountDetail implements Serializable {
 	private LocalDate loanStartDate;
 	private LocalDate loanEndDate;
 	private LocalDate installmentSartDate;
+	private Double disburseAmt;
 	private LocalDate paymentDate;
 	private String paymentMode;
 	private String installMentType;
@@ -199,6 +200,14 @@ public class LoanAccountDetail implements Serializable {
 
 	public void setPaymentMode(String paymentMode) {
 		this.paymentMode = paymentMode;
+	}
+
+	public Double getDisburseAmt() {
+		return disburseAmt;
+	}
+
+	public void setDisburseAmt(Double disburseAmt) {
+		this.disburseAmt = disburseAmt;
 	}
 
 }

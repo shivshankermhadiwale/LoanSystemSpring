@@ -78,4 +78,9 @@ public class LoanAccountDaoImpl implements LoanAccountDao {
 	public List<LoanPenalty> findDtlByLoanId(LoanAccountDetail accountDetail) {
 		return loanPenaltyRepo.findByLoanAccountId(accountDetail);
 	}
+
+	@Override
+	public List<LoanInstallmentsDetail> getAllLoanInstallmentsByDate(LocalDate fromDate, LocalDate toDate) {
+		return loandEMIDetailRepo.findByPaymentDateBetween(fromDate, toDate);
+	}
 }

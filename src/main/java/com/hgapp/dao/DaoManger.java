@@ -17,5 +17,9 @@ public interface DaoManger {
 	public LoanAccountDao getLoanSectionDao();
 
 	public UserRoleDao getUserRole();
-	
+
+	public ExpenseDao getExpenseDao();
+
+	public FDAccountDao getFdAccountDao();
+
 }

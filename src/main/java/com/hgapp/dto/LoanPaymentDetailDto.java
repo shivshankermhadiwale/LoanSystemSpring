@@ -11,6 +11,8 @@ public class LoanPaymentDetailDto implements Serializable {
 	private String paymentMode;
 	private String custFullName;
 	private Double loanAmt;
+	@NotNull(message = "Disburse Amount May Not Be Null")
+	private Double disburseAmt;
 
 	public Long getLoanAccountNo() {
 		return loanAccountNo;
@@ -42,6 +44,14 @@ public class LoanPaymentDetailDto implements Serializable {
 
 	public void setLoanAmt(Double loanAmt) {
 		this.loanAmt = loanAmt;
+	}
+
+	public Double getDisburseAmt() {
+		return disburseAmt;
+	}
+
+	public void setDisburseAmt(Double disburseAmt) {
+		this.disburseAmt = disburseAmt;
 	}
 
 }
