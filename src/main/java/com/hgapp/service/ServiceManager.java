@@ -20,4 +20,6 @@ public interface ServiceManager {
 	public DownloadService getDownloadService();
 
 	public ExpenseService getExpenseService();
+
+	public FDAccountService getFdAccountService();
 }

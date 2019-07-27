@@ -7,6 +7,7 @@ import com.hgapp.service.AuthSerivice;
 import com.hgapp.service.CustService;
 import com.hgapp.service.DownloadService;
 import com.hgapp.service.ExpenseService;
+import com.hgapp.service.FDAccountService;
 import com.hgapp.service.LoanAccountService;
 import com.hgapp.service.ServiceManager;
 
@@ -14,28 +15,31 @@ import com.hgapp.service.ServiceManager;
 public class ServiceManagerImpl implements ServiceManager {
 	@Autowired
 	private CustService customerService;
-	/*@Autowired
-	private ItemService itemService;
-	@Autowired
-	private SupplierService supplierService;
-	@Autowired
-	private PurchaseService purchaseService;*/
+	/*
+	 * @Autowired private ItemService itemService;
+	 * 
+	 * @Autowired private SupplierService supplierService;
+	 * 
+	 * @Autowired private PurchaseService purchaseService;
+	 */
 	@Autowired
 	private AuthSerivice authService;
-	/*@Autowired
-	private SalesService salesService;*/
+	/*
+	 * @Autowired private SalesService salesService;
+	 */
 	@Autowired
 	private LoanAccountService loanService;
 	@Autowired
 	private ExpenseService expenseService;
-	
-/*	public SalesService getSalesService() {
-		return salesService;
-	}
+	@Autowired
+	private FDAccountService fdAccountService;
 
-	public void setSalesService(SalesService salesService) {
-		this.salesService = salesService;
-	}*/@Autowired
+	/*
+	 * public SalesService getSalesService() { return salesService; }
+	 * 
+	 * public void setSalesService(SalesService salesService) { this.salesService =
+	 * salesService; }
+	 */@Autowired
 	private DownloadService downloadService;
 
 	public AuthSerivice getAuthService() {
@@ -46,29 +50,22 @@ public class ServiceManagerImpl implements ServiceManager {
 		this.authService = authService;
 	}
 
-	/*public PurchaseService getPurchaseService() {
-		return purchaseService;
-	}
-
-	public void setPurchaseService(PurchaseService purchaseService) {
-		this.purchaseService= purchaseService;
-	}
-
-	public ItemService getItemService() {
-		return itemService;
-	}
-
-	public SupplierService getSupplierService() {
-		return supplierService;
-	}
-
-	public void setSupplierService(SupplierService supplierService) {
-		this.supplierService = supplierService;
-	}
-
-	public void setItemService(ItemService itemService) {
-		this.itemService = itemService;
-	}*/
+	/*
+	 * public PurchaseService getPurchaseService() { return purchaseService; }
+	 * 
+	 * public void setPurchaseService(PurchaseService purchaseService) {
+	 * this.purchaseService= purchaseService; }
+	 * 
+	 * public ItemService getItemService() { return itemService; }
+	 * 
+	 * public SupplierService getSupplierService() { return supplierService; }
+	 * 
+	 * public void setSupplierService(SupplierService supplierService) {
+	 * this.supplierService = supplierService; }
+	 * 
+	 * public void setItemService(ItemService itemService) { this.itemService =
+	 * itemService; }
+	 */
 
 	public CustService getCustomerService() {
 		return customerService;
@@ -77,8 +74,6 @@ public class ServiceManagerImpl implements ServiceManager {
 	public void setCustService(CustService custService) {
 		this.customerService = custService;
 	}
-
-	
 
 	public LoanAccountService getLoanService() {
 		return loanService;
@@ -103,4 +98,13 @@ public class ServiceManagerImpl implements ServiceManager {
 	public void setExpenseService(ExpenseService expenseService) {
 		this.expenseService = expenseService;
 	}
+
+	public FDAccountService getFdAccountService() {
+		return fdAccountService;
+	}
+
+	public void setFdAccountService(FDAccountService fdAccountService) {
+		this.fdAccountService = fdAccountService;
+	}
+
 }

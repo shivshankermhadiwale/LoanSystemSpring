@@ -27,6 +27,7 @@ public class FDAccount implements Serializable {
 	private Float iterest;
 	private Double iterestAmt;
 	private Byte isActive;
+	private String remark;
 
 	public Long getAccountNo() {
 		return accountNo;
@@ -98,6 +99,14 @@ public class FDAccount implements Serializable {
 
 	public void setIsActive(Byte isActive) {
 		this.isActive = isActive;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

@@ -44,10 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-				.antMatchers("/authontication/*", "/authontication/check-username/*","/customer/downloadCustPDF/*","/Loan/download-loan-account/*").permitAll().
+				.antMatchers("/authontication/*", "/authontication/check-username/*","/FD/downloadFDPDF/*","/customer/downloadCustPDF/*","/Loan/download-loan-account/*").permitAll().
 				//Allowe swagger urls
 				antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**")
-				.permitAll().
+				.permitAll().antMatchers("/actuator/health").permitAll().
 				antMatchers(HttpMethod.OPTIONS).permitAll().anyRequest()
 				.authenticated().and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

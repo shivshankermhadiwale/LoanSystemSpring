@@ -1,5 +1,6 @@
 package com.hgapp.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class FDAccountDaoImpl implements FDAccountDao{
 	@Override
 	public Iterable<FDAccount> getAllFDAccounts() {
 		return this.fdAccountRepo.findAll();
+	}
+
+	@Override
+	public List<FDAccount> findByIsActive(Byte isActive) {
+		return this.fdAccountRepo.findByIsActive(isActive);
 	}
 
 }

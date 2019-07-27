@@ -29,9 +29,10 @@ public class FDAccountDto implements Serializable {
 	private LocalDate endDate;
 	private LocalDate closingDate;
 	@NotNull(message = "iterest required")
-	private Float iterest;
-	private Double iterestAmt;
-	private Byte isActive;
+	private Float interest;
+	private Double interestAmt;
+	private String isActive;
+	private String remark;
 
 	public Long getAccountNo() {
 		return accountNo;
@@ -89,28 +90,37 @@ public class FDAccountDto implements Serializable {
 		this.closingDate = closingDate;
 	}
 
-	public Float getIterest() {
-		return iterest;
+	public Float getInterest() {
+		return interest;
 	}
 
-	public void setIterest(Float iterest) {
-		this.iterest = iterest;
+	public void setInterest(Float interest) {
+		this.interest = interest;
 	}
 
-	public Double getIterestAmt() {
-		return iterestAmt;
+	public Double getInterestAmt() {
+		return interestAmt;
 	}
 
-	public void setIterestAmt(Double iterestAmt) {
-		this.iterestAmt = iterestAmt;
+	public void setInterestAmt(Double interestAmt) {
+		this.interestAmt = interestAmt;
 	}
 
-	public Byte getIsActive() {
+	public String getIsActive() {
 		return isActive;
 	}
 
-	public void setIsActive(Byte isActive) {
+	public void setIsActive(String isActive) {
 		this.isActive = isActive;
 	}
 
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
+	
 }
