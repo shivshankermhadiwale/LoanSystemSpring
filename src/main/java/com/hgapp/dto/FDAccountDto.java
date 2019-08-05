@@ -2,6 +2,7 @@ package com.hgapp.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -33,6 +34,11 @@ public class FDAccountDto implements Serializable {
 	private Double interestAmt;
 	private String isActive;
 	private String remark;
+	private LocalDate interstPayFrom;
+	private LocalDate interestPayTo;
+	private Integer pendingMonthsOfInterest;
+	private Double pendingInterestAmt;
+	private List<FDInterestDto> paidInterestHistory;
 
 	public Long getAccountNo() {
 		return accountNo;
@@ -121,6 +127,45 @@ public class FDAccountDto implements Serializable {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
-	
+
+	public LocalDate getInterstPayFrom() {
+		return interstPayFrom;
+	}
+
+	public void setInterstPayFrom(LocalDate interstPayFrom) {
+		this.interstPayFrom = interstPayFrom;
+	}
+
+	public List<FDInterestDto> getPaidInterestHistory() {
+		return paidInterestHistory;
+	}
+
+	public void setPaidInterestHistory(List<FDInterestDto> paidInterestHistory) {
+		this.paidInterestHistory = paidInterestHistory;
+	}
+
+	public Integer getPendingMonthsOfInterest() {
+		return pendingMonthsOfInterest;
+	}
+
+	public void setPendingMonthsOfInterest(Integer pendingMonthsOfInterest) {
+		this.pendingMonthsOfInterest = pendingMonthsOfInterest;
+	}
+
+	public LocalDate getInterestPayTo() {
+		return interestPayTo;
+	}
+
+	public void setInterestPayTo(LocalDate interestPayTo) {
+		this.interestPayTo = interestPayTo;
+	}
+
+	public Double getPendingInterestAmt() {
+		return pendingInterestAmt;
+	}
+
+	public void setPendingInterestAmt(Double pendingInterestAmt) {
+		this.pendingInterestAmt = pendingInterestAmt;
+	}
+
 }

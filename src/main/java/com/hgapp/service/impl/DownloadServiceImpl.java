@@ -19,6 +19,7 @@ import com.hgapp.dto.CustomerDto;
 import com.hgapp.dto.FDAccountDto;
 import com.hgapp.dto.LoanRepoDto;
 import com.hgapp.service.DownloadService;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -72,13 +73,13 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 	private ByteArrayInputStream generateCustomerFDPDF(FDAccountDto fdAccountDto) {
 
 		Document document = new Document(PageSize.A4, 0, 0, 50, 50);
-		Font tableHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 14f, Font.BOLD);
+		Font tableHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 16f, Font.BOLD);
 		
-		Font leftColumnHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 10f, Font.NORMAL);
+		Font leftColumnHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 14f, Font.NORMAL);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
 			PdfPTable table = createPdfTable(2, new float[] { 10, 250 }, 1);
-			table.addCell(getCell("FD Detail", 2, tableHeadingFont));
+			table.addCell(getCell("FD Receipt", 2, tableHeadingFont));
 			table.addCell(getCell("Name", 0, leftColumnHeadingFont));
 			table.addCell(getCell(fdAccountDto.getCustName(), 0, leftColumnHeadingFont));
 			table.addCell(getCell("Account No", 0, leftColumnHeadingFont));
@@ -94,9 +95,26 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 			table.addCell(getCell("End Date", 0, leftColumnHeadingFont));
 			table.addCell(getCell(String.valueOf(fdAccountDto.getEndDate()), 0, leftColumnHeadingFont));
 			PdfWriter.getInstance(document, out);
-			
 			document.open();
 			document.add(table);
+			document.add(new Paragraph("\n\n"));
+			PdfPTable receipt = createPdfTable(2, new float[] { 10, 250 }, 1);
+			receipt.addCell(getCell("FD Receipt", 2, tableHeadingFont));
+			receipt.addCell(getCell("Name", 0, leftColumnHeadingFont));
+			receipt.addCell(getCell(fdAccountDto.getCustName(), 0, leftColumnHeadingFont));
+			receipt.addCell(getCell("Account No", 0, leftColumnHeadingFont));
+			receipt.addCell(getCell(String.valueOf(fdAccountDto.getAccountNo()), 0, leftColumnHeadingFont));
+			receipt.addCell(getCell("Amount", 0, leftColumnHeadingFont));
+			receipt.addCell(getCell(String.valueOf(fdAccountDto.getAmount()), 0, leftColumnHeadingFont));
+			receipt.addCell(getCell("Interest", 0, leftColumnHeadingFont));
+			receipt.addCell(getCell(String.valueOf(fdAccountDto.getInterest()), 0, leftColumnHeadingFont));
+			receipt.addCell(getCell("Interest Amount", 0, leftColumnHeadingFont));
+			receipt.addCell(getCell(String.valueOf(fdAccountDto.getInterestAmt()), 0, leftColumnHeadingFont));
+			receipt.addCell(getCell("Start Date", 0, leftColumnHeadingFont));
+			receipt.addCell(getCell(String.valueOf(fdAccountDto.getStartDate()), 0, leftColumnHeadingFont));
+			receipt.addCell(getCell("End Date", 0, leftColumnHeadingFont));
+			receipt.addCell(getCell(String.valueOf(fdAccountDto.getEndDate()), 0, leftColumnHeadingFont));
+			document.add(receipt);
 			document.close();
 
 		} catch (DocumentException ex) {
