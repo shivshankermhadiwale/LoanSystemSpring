@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hgapp.dao.AuthDao;
-import com.hgapp.dao.CustDao;
+import com.hgapp.dao.CustomerDao;
 import com.hgapp.dao.DaoManger;
 import com.hgapp.dao.ExpenseDao;
 import com.hgapp.dao.FDAccountDao;
@@ -14,7 +14,7 @@ import com.hgapp.dao.UserRoleDao;
 @Repository
 public class DaoMangerImpl implements DaoManger {
 	@Autowired
-	private CustDao custMasterDao;
+	private CustomerDao custMasterDao;
 	/*
 	 * @Autowired private ItemDao itemDao;
 	 */
@@ -52,7 +52,7 @@ public class DaoMangerImpl implements DaoManger {
 		this.authDao = authDao;
 	}
 
-	public CustDao getCustMasterDao() {
+	public CustomerDao getCustMasterDao() {
 		return custMasterDao;
 	}
 
@@ -76,11 +76,11 @@ public class DaoMangerImpl implements DaoManger {
 	 * public void setItemDao(ItemDao itemDao) { this.itemDao = itemDao; }
 	 */
 
-	public CustDao getCustomerDao() {
+	public CustomerDao getCustomerDao() {
 		return custMasterDao;
 	}
 
-	public void setCustomerDao(CustDao custMasterDao) {
+	public void setCustomerDao(CustomerDao custMasterDao) {
 		this.custMasterDao = custMasterDao;
 	}
 

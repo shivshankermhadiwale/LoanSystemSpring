@@ -7,24 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
-import com.hgapp.dao.CustDao;
+import com.hgapp.dao.CustomerDao;
 import com.hgapp.entity.AddressDetail;
 import com.hgapp.entity.ContactPersion;
 import com.hgapp.entity.CustDetail;
-import com.hgapp.entity.CustAudit;
 import com.hgapp.repositories.AddressRepo;
 import com.hgapp.repositories.ContactPersionRepo;
-
 import com.hgapp.repositories.CustomerRepo;
 
 @Repository
-public class CustDaoImpl implements CustDao {
+public class CustDaoImpl implements CustomerDao {
 	@Autowired
 	CustomerRepo customerRepo;
 	@Autowired
 	AddressRepo custAddressRepo;
-	/*@Autowired
-	CustomerAuditRepo custAuditRepo;*/
 
 	@Autowired
 	ContactPersionRepo custContactpersionRepo;
@@ -33,8 +29,8 @@ public class CustDaoImpl implements CustDao {
 	public CustDetail addCustomerDetail(CustDetail custMaster) {
 		try {
 			return customerRepo.save(custMaster);
-		}catch(DuplicateKeyException ex) {
-		throw new DuplicateKeyException("Record Already Exist");
+		} catch (DuplicateKeyException ex) {
+			throw new DuplicateKeyException("Record Already Exist");
 		}
 	}
 
@@ -46,14 +42,6 @@ public class CustDaoImpl implements CustDao {
 	public int deleteCustomer(Long custId, boolean action) {
 		return customerRepo.deleteCustomer(custId, action);
 	}
-/*
-	public CustomerAudit findByCustomer(PersionDetail customer) {
-		return custAuditRepo.findByCustomer(customer);
-	}
-
-	public CustomerAudit saveCustomerAudit(CustomerAudit custAudit) {
-		return custAuditRepo.save(custAudit);
-	}*/
 
 	@Override
 	public AddressDetail addCustAddressDetail(AddressDetail custAddressDetail) {
@@ -66,8 +54,7 @@ public class CustDaoImpl implements CustDao {
 	}
 
 	@Override
-	public List<ContactPersion> getCustContactPersionByCustPersionalDetail(
-			CustDetail custPersionalDetail) {
+	public List<ContactPersion> getCustContactPersionByCustPersionalDetail(CustDetail custPersionalDetail) {
 		return custContactpersionRepo.getCustContactPersionByPersionId(custPersionalDetail);
 	}
 
@@ -82,5 +69,9 @@ public class CustDaoImpl implements CustDao {
 		return custAddressRepo.getCustAddressDetailByPersion(custPersionalDetail);
 	}
 
+	@Override
+	public Optional<ContactPersion> getCustContactPersionsById(Long contactPersionId) {
+		return custContactpersionRepo.findById(contactPersionId);
+	}
 
 }

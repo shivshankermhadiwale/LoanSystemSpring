@@ -1,7 +1,7 @@
 package com.hgapp.dao;
 
 public interface DaoManger {
-	public CustDao getCustomerDao();
+	public CustomerDao getCustomerDao();
 
 	/*
 	 * public ItemDao getItemDao();

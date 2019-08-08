@@ -1,4 +1,5 @@
 package com.hgapp.controller;
+
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,10 +7,11 @@ import org.springframework.web.context.ServletContextAware;
 
 import com.hgapp.service.ServiceManager;
 
-public class ControllerManager implements ServletContextAware{
+public class ControllerManager implements ServletContextAware {
 	@Autowired
 	private ServiceManager serviceManager;
 	protected ServletContext servletContext;
+
 	public ServiceManager getServiceManager() {
 		return serviceManager;
 	}
@@ -20,9 +22,8 @@ public class ControllerManager implements ServletContextAware{
 
 	@Override
 	public void setServletContext(ServletContext servletcontext) {
-	this.servletContext=servletcontext;
-		
+		this.servletContext = servletcontext;
+
 	}
 
-	
 }

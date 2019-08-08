@@ -9,7 +9,9 @@ public class CustContactPersionDto implements Serializable {
 
 	private static final long serialVersionUID = -134229937167465569L;
 	private Long custId;
-	@NotBlank(message="fullName may not be blank")@NotNull(message="fullName may not be null")
+	private Long contactPersionId;
+	@NotBlank(message = "fullName may not be blank")
+	@NotNull(message = "fullName may not be null")
 	private String fullName;
 	private String designation;
 	private AddressDto address = new AddressDto();
@@ -44,6 +46,14 @@ public class CustContactPersionDto implements Serializable {
 
 	public void setAddress(AddressDto address) {
 		this.address = address;
+	}
+
+	public Long getContactPersionId() {
+		return contactPersionId;
+	}
+
+	public void setContactPersionId(Long contactPersionId) {
+		this.contactPersionId = contactPersionId;
 	}
 
 }

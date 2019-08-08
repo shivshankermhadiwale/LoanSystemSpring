@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -21,52 +23,64 @@ import com.hgapp.dto.FDInterestDto;
 
 @RestController
 @RequestMapping("/FD")
-public class FDAccountController extends ControllerManager {
+public class FDController extends ControllerManager {
+	private static final Logger logger = LogManager.getLogger(FDController.class);
 
-	@PostMapping("/new-fd")
+	@PostMapping("/new")
 	public ResponseEntity<?> createNewFD(@Valid @RequestBody FDAccountDto fdAccountDto, Errors errors) {
+		logger.info(":creating new fd--");
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
 		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().createNewFDAccount(fdAccountDto));
 	}
 
-	@PostMapping("/close-fd")
+	@PostMapping("/close")
 	public ResponseEntity<?> closeFD(@Valid @RequestBody FDAccountDto fdAccountDto, Errors errors) {
+		logger.info(":closing fd Of--", fdAccountDto.getCustName());
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
 		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().closeFDAccount(fdAccountDto));
 	}
 
-	@GetMapping("/find-fd-by-accountid/{fdId}")
-	public ResponseEntity<?> findAccountById(@PathVariable Long fdId) {
-		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().getFDAccountDtlByAccountId(fdId));
+	@GetMapping("/find/{accountNo}")
+	public ResponseEntity<?> findByAccountNo(@PathVariable Long accountNo) {
+		logger.info(":finding fd Of--", accountNo);
+		if (accountNo == null)
+			throw new NullPointerException("Account No. may not be null");
+		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().getFDAccountDtlByAccountId(accountNo));
 	}
 
-	@RequestMapping(value = "/downloadFDPDF/{fdId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
-	public ResponseEntity<?> downloadCustPDF(@PathVariable Long fdId) throws IOException {
-		return this.getServiceManager().getDownloadService().downloandCustomerFD(fdId);
-
-	}
-
-	@RequestMapping(value = "/get-fds-by-status/{fdStatus}")
+	@RequestMapping(value = "/find-all/{fdStatus}")
 	public ResponseEntity<?> getFdsBySatus(@PathVariable Byte fdStatus) throws IOException {
+		logger.info(":find all fd statuds of--", fdStatus);
 		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().findFDByStatus(fdStatus));
 
 	}
 
-	@PostMapping("/pay-fd-intersamt")
+	@GetMapping("/findAll/{custId}")
+	public ResponseEntity<?> getCustomerFDs(@PathVariable Long custId) {
+		logger.info(":find all fd of customer--", custId);
+		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().getCustomerAllFD(custId));
+	}
+
+	@RequestMapping(value = "/download/{accountNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity<?> downloadCustPDF(@PathVariable Long accountNo) throws IOException {
+		logger.info(":download fd Of--", accountNo);
+		if (accountNo == null)
+			throw new NullPointerException("Account No. may not be null");
+		return this.getServiceManager().getDownloadService().downloandCustomerFD(accountNo);
+
+	}
+
+	@PostMapping("/pay-interst-amount")
 	public ResponseEntity<?> payFDInterestAmt(@Valid @RequestBody FDInterestDto fdInterestDto, Errors errors) {
+		logger.info(":paying interest of FD--", fdInterestDto.getFdAccountId());
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
 		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().addFDInterstAmt(fdInterestDto));
-	}
-
-	@GetMapping("/get-cust-fd-lst/{custId}")
-	public ResponseEntity<?> getCustomerFDs(@PathVariable Long custId) {
-		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().getCustomerAllFD(custId));
 	}
 
 }
