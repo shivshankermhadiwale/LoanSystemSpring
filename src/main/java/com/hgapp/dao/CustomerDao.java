@@ -8,22 +8,22 @@ import com.hgapp.entity.ContactPersion;
 import com.hgapp.entity.CustDetail;
 
 public interface CustomerDao {
-	public CustDetail addCustomerDetail(CustDetail custMaster);
+	public CustDetail saveOrUpdateCustomerDtl(CustDetail custDetail);
 
-	public Optional<CustDetail> findCustomerDetailById(Long custId);
+	public Optional<CustDetail> findCustomerDtlById(Long custId);
+
+	public List<CustDetail> findAllCustomers();
 
 	public int deleteCustomer(Long custId, boolean action);
 
-	public List<CustDetail> getAllCustomersLst();
+	public AddressDetail saveOrUpdateAddressDetail(AddressDetail addressDetail);
 
-	public AddressDetail addCustAddressDetail(AddressDetail custAddressDetail);
+	public AddressDetail findAddressDetailByCustId(CustDetail custId);
 
-	public AddressDetail getCustAddDetailByCustId(CustDetail custPersionalDetail);
+	public ContactPersion saveOrUpdateContactPersion(ContactPersion contactPersions);
 
-	public ContactPersion addCustContactPersion(ContactPersion contactPersions);
+	public Optional<ContactPersion> findContactPersionById(Long contactPersionId);
 
-	public Optional<ContactPersion> getCustContactPersionsById(Long contactPersionId);
-
-	public List<ContactPersion> getCustContactPersionByCustPersionalDetail(CustDetail custPersionalDetail);
+	public List<ContactPersion> findContactPersionsByCustId(CustDetail custId);
 
 }

@@ -38,14 +38,14 @@ public class CustomerController extends ControllerManager {
 			return new ResponseEntity<>(
 					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()),
 					HttpStatus.NOT_ACCEPTABLE);
-		return new ResponseEntity<>(this.getServiceManager().getCustomerService().addNewCustomer(customer),
+		return new ResponseEntity<>(this.getServiceManager().getCustomerService().saveOrUpdateCustomerDtl(customer),
 				HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping("/find-all")
 	public ResponseEntity<?> findAll() {
 		logger.info(":Find All Customers Preocess Begins--");
-		return new ResponseEntity<>(this.getServiceManager().getCustomerService().getAllCustomersLst(),
+		return new ResponseEntity<>(this.getServiceManager().getCustomerService().findAllCustomers(),
 				HttpStatus.ACCEPTED);
 	}
 
@@ -54,7 +54,7 @@ public class CustomerController extends ControllerManager {
 		logger.info(" : Find Customer By Id Process Begins------");
 		if (custId == null)
 			throw new NullPointerException("custId Is Empty");
-		return new ResponseEntity<>(this.getServiceManager().getCustomerService().findCustomerDetailById(custId),
+		return new ResponseEntity<>(this.getServiceManager().getCustomerService().findCustomerDtlById(custId),
 				HttpStatus.OK);
 	}
 
@@ -73,7 +73,7 @@ public class CustomerController extends ControllerManager {
 			return new ResponseEntity<>(
 					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()),
 					HttpStatus.NOT_ACCEPTABLE);
-		return new ResponseEntity<>(this.getServiceManager().getCustomerService().editCustomerDetail(customer),
+		return new ResponseEntity<>(this.getServiceManager().getCustomerService().saveOrUpdateCustomerDtl(customer),
 				HttpStatus.ACCEPTED);
 	}
 
@@ -91,7 +91,8 @@ public class CustomerController extends ControllerManager {
 			return new ResponseEntity<>(
 					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()),
 					HttpStatus.NOT_ACCEPTABLE);
-		return new ResponseEntity<>(this.getServiceManager().getCustomerService().addCustContactPersion(custContact),
+		return new ResponseEntity<>(
+				this.getServiceManager().getCustomerService().saveOrUpdateAddressDetail(custContact),
 				HttpStatus.ACCEPTED);
 	}
 
@@ -100,7 +101,7 @@ public class CustomerController extends ControllerManager {
 		logger.info(":Find Contact Persion By Cust Id Process Begins--" + custId);
 		if (custId == null)
 			throw new NullPointerException("custId Is Empty");
-		return new ResponseEntity<>(this.getServiceManager().getCustomerService().getCustContactPersionByCustId(custId),
+		return new ResponseEntity<>(this.getServiceManager().getCustomerService().findContactPersionsByCustId(custId),
 				HttpStatus.OK);
 	}
 
@@ -112,7 +113,8 @@ public class CustomerController extends ControllerManager {
 			return new ResponseEntity<>(
 					error.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()),
 					HttpStatus.NOT_ACCEPTABLE);
-		return new ResponseEntity<>(this.getServiceManager().getCustomerService().editCustContactPersion(custContact),
+		return new ResponseEntity<>(
+				this.getServiceManager().getCustomerService().saveOrUpdateAddressDetail(custContact),
 				HttpStatus.ACCEPTED);
 	}
 }

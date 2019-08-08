@@ -23,7 +23,7 @@ public class FDAccountServiceImpl extends DaoServicess implements FDAccountServi
 	@Override
 	public FDAccountDto createNewFDAccount(FDAccountDto fdAccountDto) {
 		Optional<CustDetail> custDetail = this.getDaoManager().getCustomerDao()
-				.findCustomerDetailById(fdAccountDto.getCustId());
+				.findCustomerDtlById(fdAccountDto.getCustId());
 		if (!custDetail.isPresent())
 			throw new RecordNotFound("customer not found");
 		FDAccount fdAccount = new FDAccount();
@@ -163,7 +163,7 @@ public class FDAccountServiceImpl extends DaoServicess implements FDAccountServi
 
 	@Override
 	public List<FDAccountDto> getCustomerAllFD(Long custId) {
-		Optional<CustDetail> custDetail = this.getDaoManager().getCustomerDao().findCustomerDetailById(custId);
+		Optional<CustDetail> custDetail = this.getDaoManager().getCustomerDao().findCustomerDtlById(custId);
 		if (!custDetail.isPresent())
 			throw new RecordNotFound("Customer Not Found");
 		List<FDAccount> fdAccounts = this.getDaoManager().getFdAccountDao().getCustomerFdByCustId(custDetail.get());

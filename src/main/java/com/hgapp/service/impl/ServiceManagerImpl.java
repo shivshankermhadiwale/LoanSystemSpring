@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hgapp.service.AuthSerivice;
-import com.hgapp.service.CustService;
+import com.hgapp.service.CustomerService;
 import com.hgapp.service.DownloadService;
 import com.hgapp.service.ExpenseService;
 import com.hgapp.service.FDAccountService;
@@ -14,7 +14,7 @@ import com.hgapp.service.ServiceManager;
 @Service
 public class ServiceManagerImpl implements ServiceManager {
 	@Autowired
-	private CustService customerService;
+	private CustomerService customerService;
 	/*
 	 * @Autowired private ItemService itemService;
 	 * 
@@ -67,11 +67,11 @@ public class ServiceManagerImpl implements ServiceManager {
 	 * itemService; }
 	 */
 
-	public CustService getCustomerService() {
+	public CustomerService getCustomerService() {
 		return customerService;
 	}
 
-	public void setCustService(CustService custService) {
+	public void setCustService(CustomerService custService) {
 		this.customerService = custService;
 	}
 

@@ -40,9 +40,9 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 
 	@Override
 	public ResponseEntity<?> customerPdfDownload(Long custId) throws IOException {
-		CustomerDto customerDto = this.getServiceManager().getCustomerService().findCustomerDetailById(custId);
+		CustomerDto customerDto = this.getServiceManager().getCustomerService().findCustomerDtlById(custId);
 		List<CustContactPersionDto> contactPersionDtos = this.getServiceManager().getCustomerService()
-				.getCustContactPersionByCustId(custId);
+				.findContactPersionsByCustId(custId);
 		ByteArrayInputStream bis = generatePdf(customerDto, contactPersionDtos);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Disposition", "inline; filename=" + "customer_" + customerDto.getFullName() + ".pdf");
