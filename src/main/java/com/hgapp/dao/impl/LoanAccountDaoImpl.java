@@ -27,28 +27,26 @@ public class LoanAccountDaoImpl implements LoanAccountDao {
 	LoanPenaltyRepo loanPenaltyRepo;
 
 	@Override
-	public LoanAccountDetail createLoanNewAccount(LoanAccountDetail accountDetail) {
+	public LoanAccountDetail saveOrUpdateLoanAccount(LoanAccountDetail accountDetail) {
 		return loanAccountDetailRepo.save(accountDetail);
 	}
 
 	@Override
-	public LoanInstallmentsDetail addPayment(LoanInstallmentsDetail emiDetail) {
-		return loandEMIDetailRepo.save(emiDetail);
-	}
-
-	@Override
-	public List<LoanAccountDetail> getLoanDetailByCustId(CustDetail custId) {
-		return loanAccountDetailRepo.findByCustId(custId);
-	}
-
-	@Override
-	public Optional<LoanAccountDetail> getLoanAccountDetailByLoanId(Long loanAccid) {
+	public Optional<LoanAccountDetail> findByLoanId(Long loanAccid) {
 		return loanAccountDetailRepo.findById(loanAccid);
 	}
 
 	@Override
-	public List<LoanInstallmentsDetail> getLoanInstallmentsByLoanId(LoanAccountDetail loanAccountDetail) {
-		return loandEMIDetailRepo.getLoanInstallmentsByLoanAccouuntNo(loanAccountDetail);
+	public List<LoanAccountDetail> findCustId(CustDetail custId) {
+		return loanAccountDetailRepo.findByCustId(custId);
+	}
+
+	@Override
+	public List<LoanAccountDetail> findByStatus(String status) {
+		if (status.equalsIgnoreCase("All"))
+			return (List<LoanAccountDetail>) loanAccountDetailRepo.findAll();
+		else
+			return loanAccountDetailRepo.findByLoanStatus(status);
 	}
 
 	@Override
@@ -57,30 +55,32 @@ public class LoanAccountDaoImpl implements LoanAccountDao {
 	}
 
 	@Override
-	public List<LoanAccountDetail> getAllLoanAccount(String status) {
-		if (status.equalsIgnoreCase("All"))
-			return (List<LoanAccountDetail>) loanAccountDetailRepo.findAll();
-		else
-			return loanAccountDetailRepo.findByLoanStatus(status);
+	public LoanInstallmentsDetail saveOrUpdateEMI(LoanInstallmentsDetail emiDetail) {
+		return loandEMIDetailRepo.save(emiDetail);
 	}
 
 	@Override
-	public List<LoanInstallmentsDetail> getLoanInstallmentDetailsByPaymentDate(LocalDate paymentDate) {
+	public List<LoanInstallmentsDetail> findEMIByLoanId(LoanAccountDetail loanAccountDetail) {
+		return loandEMIDetailRepo.getLoanInstallmentsByLoanAccouuntNo(loanAccountDetail);
+	}
+
+	@Override
+	public List<LoanInstallmentsDetail> findLoanEMIByFromDateAndToDate(LocalDate fromDate, LocalDate toDate) {
+		return loandEMIDetailRepo.findByPaymentDateBetween(fromDate, toDate);
+	}
+
+	@Override
+	public List<LoanInstallmentsDetail> findEMIByPaymentDate(LocalDate paymentDate) {
 		return loandEMIDetailRepo.getInstallmentDetailsByDate(paymentDate);
 	}
 
 	@Override
-	public LoanPenalty addPenalty(LoanPenalty loanPenalty) {
+	public LoanPenalty saveOrUpdatePenalty(LoanPenalty loanPenalty) {
 		return loanPenaltyRepo.save(loanPenalty);
 	}
 
 	@Override
-	public List<LoanPenalty> findDtlByLoanId(LoanAccountDetail accountDetail) {
+	public List<LoanPenalty> findPendaltyByLoanId(LoanAccountDetail accountDetail) {
 		return loanPenaltyRepo.findByLoanAccountId(accountDetail);
-	}
-
-	@Override
-	public List<LoanInstallmentsDetail> getAllLoanInstallmentsByDate(LocalDate fromDate, LocalDate toDate) {
-		return loandEMIDetailRepo.findByPaymentDateBetween(fromDate, toDate);
 	}
 }

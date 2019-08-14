@@ -32,7 +32,7 @@ public class FDController extends ControllerManager {
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
-		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().createNewFDAccount(fdAccountDto));
+		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().saveorUpdateFDAccount(fdAccountDto));
 	}
 
 	@PostMapping("/close")
@@ -41,7 +41,7 @@ public class FDController extends ControllerManager {
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
-		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().closeFDAccount(fdAccountDto));
+		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().closeAccount(fdAccountDto));
 	}
 
 	@GetMapping("/find/{accountNo}")
@@ -49,20 +49,20 @@ public class FDController extends ControllerManager {
 		logger.info(":finding fd Of--", accountNo);
 		if (accountNo == null)
 			throw new NullPointerException("Account No. may not be null");
-		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().getFDAccountDtlByAccountId(accountNo));
+		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().findByAccountId(accountNo));
 	}
 
 	@RequestMapping(value = "/find-all/{fdStatus}")
 	public ResponseEntity<?> getFdsBySatus(@PathVariable Byte fdStatus) throws IOException {
 		logger.info(":find all fd statuds of--", fdStatus);
-		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().findFDByStatus(fdStatus));
+		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().findByIsActive(fdStatus));
 
 	}
 
 	@GetMapping("/findAll/{custId}")
 	public ResponseEntity<?> getCustomerFDs(@PathVariable Long custId) {
 		logger.info(":find all fd of customer--", custId);
-		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().getCustomerAllFD(custId));
+		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().findByCustId(custId));
 	}
 
 	@RequestMapping(value = "/download/{accountNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
@@ -80,7 +80,7 @@ public class FDController extends ControllerManager {
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
-		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().addFDInterstAmt(fdInterestDto));
+		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().saveOrUpdateInterest(fdInterestDto));
 	}
 
 }

@@ -10,25 +10,25 @@ import com.hgapp.entity.LoanInstallmentsDetail;
 import com.hgapp.entity.LoanPenalty;
 
 public interface LoanAccountDao {
-	public LoanAccountDetail createLoanNewAccount(LoanAccountDetail accountDetail);
+	public LoanAccountDetail saveOrUpdateLoanAccount(LoanAccountDetail accountDetail);
 
-	public Optional<LoanAccountDetail> getLoanAccountDetailByLoanId(Long loanAccid);
+	public Optional<LoanAccountDetail> findByLoanId(Long loanAccid);
 
-	public List<LoanInstallmentsDetail> getAllLoanInstallmentsByDate(LocalDate fromDate, LocalDate toDate);
+	public List<LoanAccountDetail> findCustId(CustDetail custId);
 
-	public LoanInstallmentsDetail addPayment(LoanInstallmentsDetail emiDetail);
-
-	public List<LoanInstallmentsDetail> getLoanInstallmentsByLoanId(LoanAccountDetail loanAccountDetail);
-
-	public List<LoanAccountDetail> getLoanDetailByCustId(CustDetail custId);
+	public List<LoanAccountDetail> findByStatus(String status);
 
 	public int closeLoanAccount(String status, LocalDate lastUpdated, String remark, Long loanAccountNo);
 
-	public List<LoanAccountDetail> getAllLoanAccount(String status);
+	public LoanInstallmentsDetail saveOrUpdateEMI(LoanInstallmentsDetail emiDetail);
 
-	public List<LoanInstallmentsDetail> getLoanInstallmentDetailsByPaymentDate(LocalDate paymentDate);
+	public List<LoanInstallmentsDetail> findLoanEMIByFromDateAndToDate(LocalDate fromDate, LocalDate toDate);
 
-	public LoanPenalty addPenalty(LoanPenalty loanPenalty);
+	public List<LoanInstallmentsDetail> findEMIByLoanId(LoanAccountDetail loanAccountDetail);
 
-	public List<LoanPenalty> findDtlByLoanId(LoanAccountDetail accountDetail);
+	public List<LoanInstallmentsDetail> findEMIByPaymentDate(LocalDate paymentDate);
+
+	public LoanPenalty saveOrUpdatePenalty(LoanPenalty loanPenalty);
+
+	public List<LoanPenalty> findPendaltyByLoanId(LoanAccountDetail accountDetail);
 }

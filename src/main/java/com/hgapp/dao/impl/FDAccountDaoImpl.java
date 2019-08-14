@@ -21,18 +21,18 @@ public class FDAccountDaoImpl implements FDAccountDao {
 	FDInterestRepo fdInterestRepo;
 
 	@Override
-	public FDAccount createNewFDAccount(FDAccount fdAccount) {
+	public FDAccount saveOrUpdateFDAccount(FDAccount fdAccount) {
 		return this.fdAccountRepo.save(fdAccount);
 	}
 
 	@Override
-	public Optional<FDAccount> getFDAccountDtlByAccountId(Long accountNo) {
+	public Optional<FDAccount> findByAccountId(Long accountNo) {
 		return this.fdAccountRepo.findById(accountNo);
 	}
 
 	@Override
-	public Iterable<FDAccount> getAllFDAccounts() {
-		return this.fdAccountRepo.findAll();
+	public List<FDAccount> findByCustId(CustDetail custDetail) {
+		return fdAccountRepo.findByCustId(custDetail);
 	}
 
 	@Override
@@ -41,18 +41,18 @@ public class FDAccountDaoImpl implements FDAccountDao {
 	}
 
 	@Override
-	public FDInterest addFDInterest(FDInterest fdInterest) {
+	public Iterable<FDAccount> findAllFDAccounts() {
+		return this.fdAccountRepo.findAll();
+	}
+
+	@Override
+	public FDInterest saveOrUpdateInterest(FDInterest fdInterest) {
 		return this.fdInterestRepo.save(fdInterest);
 	}
 
 	@Override
-	public List<FDInterest> getPaidInterest(FDAccount fdAccountId) {
+	public List<FDInterest> findPaidInterestByFdAccountNo(FDAccount fdAccountId) {
 		return fdInterestRepo.findByFdAccountId(fdAccountId);
-	}
-
-	@Override
-	public List<FDAccount> getCustomerFdByCustId(CustDetail custDetail) {
-		return fdAccountRepo.findByCustId(custDetail);
 	}
 
 }

@@ -6,16 +6,16 @@ import com.hgapp.dto.FDAccountDto;
 import com.hgapp.dto.FDInterestDto;
 
 public interface FDAccountService {
-	public FDAccountDto createNewFDAccount(FDAccountDto fdAccountDto);
+	public FDAccountDto saveorUpdateFDAccount(FDAccountDto fdAccountDto);
 
-	public FDAccountDto closeFDAccount(FDAccountDto fdAccountDto);
+	public List<FDAccountDto> findByIsActive(Byte isActive);
 
-	public FDAccountDto getFDAccountDtlByAccountId(Long accountNo);
+	public List<FDAccountDto> findByCustId(Long custId);
 
-	public List<FDAccountDto> findFDByStatus(Byte isActive);
+	public FDAccountDto findByAccountId(Long accountNo);
 
-	public FDInterestDto addFDInterstAmt(FDInterestDto fdInterestDto);
+	public FDAccountDto closeAccount(FDAccountDto fdAccountDto);
 
-	public List<FDAccountDto> getCustomerAllFD(Long custId);
+	public FDInterestDto saveOrUpdateInterest(FDInterestDto fdInterestDto);
 
 }

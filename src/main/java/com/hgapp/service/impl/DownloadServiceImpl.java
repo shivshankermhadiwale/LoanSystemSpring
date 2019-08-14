@@ -19,7 +19,6 @@ import com.hgapp.dto.CustomerDto;
 import com.hgapp.dto.FDAccountDto;
 import com.hgapp.dto.LoanRepoDto;
 import com.hgapp.service.DownloadService;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -49,32 +48,33 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(bis));
 	}
-	
+
 	@Override
 	public ResponseEntity<?> downloandLoanAccounts(String status) {
-		List<LoanRepoDto> loanRepolst=this.getServiceManager().getLoanService().getAllLoanAccount(status);
+		List<LoanRepoDto> loanRepolst = this.getServiceManager().getLoanService().findByStatus(status);
 		ByteArrayInputStream bis = generateLoanAccountsPdf(loanRepolst);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", "inline; filename=" + "LoanReport_" + LocalDate.now()+ ".pdf");
+		headers.add("Content-Disposition", "inline; filename=" + "LoanReport_" + LocalDate.now() + ".pdf");
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(bis));
-	
+
 	}
 
 	@Override
 	public ResponseEntity<?> downloandCustomerFD(Long fdId) {
-		FDAccountDto fdAccountDto=this.getServiceManager().getFdAccountService().getFDAccountDtlByAccountId(fdId);
+		FDAccountDto fdAccountDto = this.getServiceManager().getFdAccountService().findByAccountId(fdId);
 		ByteArrayInputStream bis = generateCustomerFDPDF(fdAccountDto);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", "inline; filename=" + "CustFD_" + LocalDate.now()+ ".pdf");
+		headers.add("Content-Disposition", "inline; filename=" + "CustFD_" + LocalDate.now() + ".pdf");
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(bis));
 	}
+
 	private ByteArrayInputStream generateCustomerFDPDF(FDAccountDto fdAccountDto) {
 
 		Document document = new Document(PageSize.A4, 0, 0, 50, 50);
 		Font tableHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 16f, Font.BOLD);
-		
+
 		Font leftColumnHeadingFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 14f, Font.NORMAL);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
@@ -118,11 +118,12 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 			document.close();
 
 		} catch (DocumentException ex) {
-			
+
 		}
 
 		return new ByteArrayInputStream(out.toByteArray());
 	}
+
 	private ByteArrayInputStream generateLoanAccountsPdf(List<LoanRepoDto> loanRepolst) {
 
 		Document document = new Document(PageSize.A4, 0, 0, 50, 50);
@@ -133,7 +134,7 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 
 		try {
 
-			PdfPTable loanDtlstable = createPdfTable(8,new float[] {20,10,10,10,10,10,10,10},1);
+			PdfPTable loanDtlstable = createPdfTable(8, new float[] { 20, 10, 10, 10, 10, 10, 10, 10 }, 1);
 			loanDtlstable.addCell(getCell("Loan Accounts", 8, tableHeadingFont));
 			loanDtlstable.addCell(getCell("Customer Name", 0, tableColHeadingFont));
 			loanDtlstable.addCell(getCell("Account No.", 0, tableColHeadingFont));
@@ -150,11 +151,19 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 					loanDtlstable.addCell(getCell(String.valueOf(data.getLoanAccountNo()), 0, leftColumnHeadingFont));
 					loanDtlstable.addCell(getCell(String.valueOf(data.getPrincipalAmount()), 0, leftColumnHeadingFont));
 					loanDtlstable.addCell(getCell(String.valueOf(data.getLoanAmt()), 0, leftColumnHeadingFont));
-					loanDtlstable.addCell(getCell(data.getTotalCollection()==null?"":String.valueOf(data.getTotalCollection()), 0, leftColumnHeadingFont));
-					loanDtlstable.addCell(getCell(data.getRemainCollection()==null?"":String.valueOf(data.getRemainCollection()), 0, leftColumnHeadingFont));
-					loanDtlstable.addCell(getCell(data.getPaymentDate()==null?"":String.valueOf(data.getPaymentDate()), 0, leftColumnHeadingFont));
-					loanDtlstable.addCell(getCell(data.getLoanEndigDate()==null?"":String.valueOf(data.getLoanEndigDate()), 0, leftColumnHeadingFont));
-				
+					loanDtlstable.addCell(
+							getCell(data.getTotalCollection() == null ? "" : String.valueOf(data.getTotalCollection()),
+									0, leftColumnHeadingFont));
+					loanDtlstable.addCell(getCell(
+							data.getRemainCollection() == null ? "" : String.valueOf(data.getRemainCollection()), 0,
+							leftColumnHeadingFont));
+					loanDtlstable
+							.addCell(getCell(data.getPaymentDate() == null ? "" : String.valueOf(data.getPaymentDate()),
+									0, leftColumnHeadingFont));
+					loanDtlstable.addCell(
+							getCell(data.getLoanEndigDate() == null ? "" : String.valueOf(data.getLoanEndigDate()), 0,
+									leftColumnHeadingFont));
+
 				});
 			}
 			document.open();
@@ -162,7 +171,7 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 			document.close();
 
 		} catch (DocumentException ex) {
-			
+
 		}
 
 		return new ByteArrayInputStream(out.toByteArray());
@@ -248,8 +257,5 @@ public class DownloadServiceImpl extends ControllerManager implements DownloadSe
 		paragraph.setAlignment(Element.ALIGN_RIGHT);
 		return paragraph;
 	}
-
-
-	
 
 }

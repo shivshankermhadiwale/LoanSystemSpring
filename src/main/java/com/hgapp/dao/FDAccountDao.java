@@ -8,18 +8,18 @@ import com.hgapp.entity.FDAccount;
 import com.hgapp.entity.FDInterest;
 
 public interface FDAccountDao {
-	public FDAccount createNewFDAccount(FDAccount fdAccount);
+	public FDAccount saveOrUpdateFDAccount(FDAccount fdAccount);
 
-	public Optional<FDAccount> getFDAccountDtlByAccountId(Long accountNo);
+	public Optional<FDAccount> findByAccountId(Long accountNo);
 
-	public Iterable<FDAccount> getAllFDAccounts();
+	public List<FDAccount> findByCustId(CustDetail custDetail);
+
+	public Iterable<FDAccount> findAllFDAccounts();
 
 	public List<FDAccount> findByIsActive(Byte isActive);
 
-	public FDInterest addFDInterest(FDInterest fdInterest);
+	public FDInterest saveOrUpdateInterest(FDInterest fdInterest);
 
-	public List<FDInterest> getPaidInterest(FDAccount fdAccountId);
-	
-	public List<FDAccount> getCustomerFdByCustId(CustDetail custDetail);
+	public List<FDInterest> findPaidInterestByFdAccountNo(FDAccount fdAccountId);
 
 }

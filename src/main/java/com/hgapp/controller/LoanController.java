@@ -39,7 +39,7 @@ public class LoanController extends ControllerManager {
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().createLoanNewAccount(accountDetail));
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().saveOrUpdateLoanAccount(accountDetail));
 
 	}
 
@@ -48,7 +48,7 @@ public class LoanController extends ControllerManager {
 		logger.info(":Finding Loan Detail Of--" + loanAccountNo);
 		if (loanAccountNo == null)
 			throw new NullPointerException("loanAccountNo May Not Be Null");
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().getLoanDetailByLoanId(loanAccountNo));
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().findByLoanId(loanAccountNo));
 
 	}
 
@@ -58,8 +58,8 @@ public class LoanController extends ControllerManager {
 		logger.info(" : Calling Get Loan Detail By CustId and Loan Status Process Begins------");
 		if (custId == null || loanStatus == null || loanStatus.isEmpty())
 			throw new NullPointerException("CustId/LoanStatus May Not Be Null");
-		return ResponseEntity.ok(this.getServiceManager().getLoanService()
-				.getLoanDetailByCustIdAndStatus(Long.valueOf(custId), loanStatus));
+		return ResponseEntity
+				.ok(this.getServiceManager().getLoanService().findByCustIdAndStatus(Long.valueOf(custId), loanStatus));
 
 	}
 
@@ -68,7 +68,7 @@ public class LoanController extends ControllerManager {
 		logger.info(":Find All Loan Accounts By Status--" + status);
 		if (status == null || status.isEmpty())
 			throw new NullPointerException("Input Data Missing");
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().getAllLoanAccount(status));
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().findByStatus(status));
 
 	}
 
@@ -98,21 +98,23 @@ public class LoanController extends ControllerManager {
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().addLoanPaymentDtl(paymentDetailDto));
+		return ResponseEntity
+				.ok(this.getServiceManager().getLoanService().saveOrUpdateLoanDisburserment(paymentDetailDto));
 
 	}
 
 	@GetMapping("/find-disbursement/{loanStatus}")
 	public ResponseEntity<?> findLoanDisbursementByLoanStatus(@PathVariable String loanStatus) {
 		logger.info(":Find loan Disbursement Of Loan Status--" + loanStatus);
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().getLoanDisbursedByStatus(loanStatus));
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().findLoanDisbursementByStatus(loanStatus));
 
 	}
 
 	@GetMapping("/find-pending-disbursements")
 	public ResponseEntity<?> getPendingEMI() {
 		logger.info(":finding pending loand disbursements--");
-		return new ResponseEntity<>(this.getServiceManager().getLoanService().getPendingLoanPayment(), HttpStatus.OK);
+		return new ResponseEntity<>(this.getServiceManager().getLoanService().findPendingDisbursements(),
+				HttpStatus.OK);
 
 	}
 
@@ -122,7 +124,7 @@ public class LoanController extends ControllerManager {
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().addPayment(detail));
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().saveOrUpdateEMI(detail));
 
 	}
 
@@ -131,21 +133,21 @@ public class LoanController extends ControllerManager {
 			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
 			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
 		return ResponseEntity
-				.ok(this.getServiceManager().getLoanService().getAllLoanInstallmentsByDate(fromDate, toDate));
+				.ok(this.getServiceManager().getLoanService().findLoanEMIByFromDateAndToDate(fromDate, toDate));
 
 	}
 
 	@GetMapping("/get-daily-paid-emi")
 	public ResponseEntity<?> getTodayCollectionSummary() {
 		logger.info(":Get Daily Paid EMI--");
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().getTodayCollectionSummary());
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().findAllEMIByDaily());
 
 	}
 
 	@GetMapping("/get-penalty/{loanAccountId}")
 	public ResponseEntity<?> getPenaltyByLoanAccountId(@PathVariable Long loanAccountId) {
 		logger.info(":Getting Loan Penalty Of--" + loanAccountId);
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().findDtlByLoanId(loanAccountId));
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().findPendaltyByLoanId(loanAccountId));
 
 	}
 
@@ -155,7 +157,7 @@ public class LoanController extends ControllerManager {
 		if (errors.hasErrors())
 			return ResponseEntity.ok(
 					errors.getAllErrors().stream().map(data -> data.getDefaultMessage()).collect(Collectors.toList()));
-		return ResponseEntity.ok(this.getServiceManager().getLoanService().addPenalty(loanPenaltyDto));
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().saveOrUpdatePenalty(loanPenaltyDto));
 
 	}
 

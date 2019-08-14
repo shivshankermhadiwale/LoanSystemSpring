@@ -21,7 +21,7 @@ import com.hgapp.utils.DateUtils;
 public class FDAccountServiceImpl extends DaoServicess implements FDAccountService {
 
 	@Override
-	public FDAccountDto createNewFDAccount(FDAccountDto fdAccountDto) {
+	public FDAccountDto saveorUpdateFDAccount(FDAccountDto fdAccountDto) {
 		Optional<CustDetail> custDetail = this.getDaoManager().getCustomerDao()
 				.findCustomerDtlById(fdAccountDto.getCustId());
 		if (!custDetail.isPresent())
@@ -34,17 +34,18 @@ public class FDAccountServiceImpl extends DaoServicess implements FDAccountServi
 		fdAccount.setIterest(fdAccountDto.getInterest());
 		// fdAccount.setIterestAmt(fdAccountDto.getInterestAmt());
 		fdAccount.setIsActive((byte) 1);
-		fdAccount = this.getDaoManager().getFdAccountDao().createNewFDAccount(fdAccount);
+		fdAccount = this.getDaoManager().getFdAccountDao().saveOrUpdateFDAccount(fdAccount);
 		fdAccountDto.setAccountNo(fdAccount.getAccountNo());
 		return fdAccountDto;
 	}
 
 	@Override
-	public FDAccountDto getFDAccountDtlByAccountId(Long accountNo) {
-		Optional<FDAccount> fdAccount = this.getDaoManager().getFdAccountDao().getFDAccountDtlByAccountId(accountNo);
+	public FDAccountDto findByAccountId(Long accountNo) {
+		Optional<FDAccount> fdAccount = this.getDaoManager().getFdAccountDao().findByAccountId(accountNo);
 		if (!fdAccount.isPresent())
 			throw new RecordNotFound("FD Account Not Found");
-		List<FDInterest> fdInterests = this.getDaoManager().getFdAccountDao().getPaidInterest(fdAccount.get());
+		List<FDInterest> fdInterests = this.getDaoManager().getFdAccountDao()
+				.findPaidInterestByFdAccountNo(fdAccount.get());
 		FDAccountDto fdAccountDto = new FDAccountDto();
 		fdAccountDto.setAccountNo(fdAccount.get().getAccountNo());
 		fdAccountDto.setCustName(fdAccount.get().getCustId().getFullName());
@@ -92,12 +93,12 @@ public class FDAccountServiceImpl extends DaoServicess implements FDAccountServi
 	}
 
 	@Override
-	public List<FDAccountDto> findFDByStatus(Byte isActive) {
+	public List<FDAccountDto> findByIsActive(Byte isActive) {
 		List<FDAccount> fdAccounts = null;
 		if (isActive == null)
 			throw new NullPointerException("isActive not be null");
 		if (isActive == 2)
-			fdAccounts = (List<FDAccount>) this.getDaoManager().getFdAccountDao().getAllFDAccounts();
+			fdAccounts = (List<FDAccount>) this.getDaoManager().getFdAccountDao().findAllFDAccounts();
 		else
 			fdAccounts = this.getDaoManager().getFdAccountDao().findByIsActive(isActive);
 		if (null != fdAccounts && fdAccounts.size() < 0)
@@ -118,55 +119,11 @@ public class FDAccountServiceImpl extends DaoServicess implements FDAccountServi
 	}
 
 	@Override
-	public FDAccountDto closeFDAccount(FDAccountDto fdAccountDto) {
-		Optional<FDAccount> fdAccount = this.getDaoManager().getFdAccountDao()
-				.getFDAccountDtlByAccountId(fdAccountDto.getAccountNo());
-		if (!fdAccount.isPresent())
-			throw new RecordNotFound("FD Account Not Exist");
-		// fdAccount.get().setIterestAmt(fdAccountDto.getInterestAmt());
-		// fdAccount.get().setIterest(fdAccountDto.getInterest());
-		fdAccount.get().setClosingDate(LocalDate.now());
-		fdAccount.get().setRemark(fdAccountDto.getRemark());
-		fdAccount.get().setIsActive((byte) 0);
-		this.getDaoManager().getFdAccountDao().createNewFDAccount(fdAccount.get());
-		return fdAccountDto;
-	}
-
-	@Override
-	public FDInterestDto addFDInterstAmt(FDInterestDto fdInterestDto) {
-		Optional<FDAccount> fdAccount = this.getDaoManager().getFdAccountDao()
-				.getFDAccountDtlByAccountId(fdInterestDto.getFdAccountId());
-		if (!fdAccount.isPresent())
-			throw new RecordNotFound("FD Account Not Exist");
-		if (fdAccount.get().getIterestAmt() != null)
-			fdAccount.get().setIterestAmt(fdInterestDto.getInterestAmt() + fdAccount.get().getIterestAmt());
-		else
-			fdAccount.get().setIterestAmt(fdInterestDto.getInterestAmt());
-		FDInterest fdInterest = new FDInterest();
-		fdInterest.setFdAccountId(fdAccount.get());
-		fdInterest.setPaidInterest(fdInterestDto.getInterestAmt());
-		fdInterest.setFromDate(fdInterestDto.getFromDate());
-		fdInterest.setToDate(fdInterestDto.getToDate());
-		fdInterest.setPaidDate(LocalDate.now());
-		fdInterest.setPaidMode(fdInterestDto.getPaidMode());
-		this.getDaoManager().getFdAccountDao().createNewFDAccount(fdAccount.get());
-		fdInterest = this.getDaoManager().getFdAccountDao().addFDInterest(fdInterest);
-		fdInterestDto.setInterestId(fdInterest.getInterestId());
-		fdInterestDto.setPaidDate(fdInterest.getPaidDate());
-		return fdInterestDto;
-	}
-
-	private Double calculateInterestAmt(double amount, float interest, int months) {
-		Double montlyInterest = (amount / 100) * interest;
-		return months * montlyInterest;
-	}
-
-	@Override
-	public List<FDAccountDto> getCustomerAllFD(Long custId) {
+	public List<FDAccountDto> findByCustId(Long custId) {
 		Optional<CustDetail> custDetail = this.getDaoManager().getCustomerDao().findCustomerDtlById(custId);
 		if (!custDetail.isPresent())
 			throw new RecordNotFound("Customer Not Found");
-		List<FDAccount> fdAccounts = this.getDaoManager().getFdAccountDao().getCustomerFdByCustId(custDetail.get());
+		List<FDAccount> fdAccounts = this.getDaoManager().getFdAccountDao().findByCustId(custDetail.get());
 		if (fdAccounts != null && fdAccounts.size() > 0) {
 			List<FDAccountDto> accountDtos = fdAccounts.stream().map(fdaccountdtl -> {
 				FDAccountDto accountDto = new FDAccountDto();
@@ -186,6 +143,50 @@ public class FDAccountServiceImpl extends DaoServicess implements FDAccountServi
 			return accountDtos;
 		}
 		return null;
+	}
+
+	@Override
+	public FDAccountDto closeAccount(FDAccountDto fdAccountDto) {
+		Optional<FDAccount> fdAccount = this.getDaoManager().getFdAccountDao()
+				.findByAccountId(fdAccountDto.getAccountNo());
+		if (!fdAccount.isPresent())
+			throw new RecordNotFound("FD Account Not Exist");
+		// fdAccount.get().setIterestAmt(fdAccountDto.getInterestAmt());
+		// fdAccount.get().setIterest(fdAccountDto.getInterest());
+		fdAccount.get().setClosingDate(LocalDate.now());
+		fdAccount.get().setRemark(fdAccountDto.getRemark());
+		fdAccount.get().setIsActive((byte) 0);
+		this.getDaoManager().getFdAccountDao().saveOrUpdateFDAccount(fdAccount.get());
+		return fdAccountDto;
+	}
+
+	@Override
+	public FDInterestDto saveOrUpdateInterest(FDInterestDto fdInterestDto) {
+		Optional<FDAccount> fdAccount = this.getDaoManager().getFdAccountDao()
+				.findByAccountId(fdInterestDto.getFdAccountId());
+		if (!fdAccount.isPresent())
+			throw new RecordNotFound("FD Account Not Exist");
+		if (fdAccount.get().getIterestAmt() != null)
+			fdAccount.get().setIterestAmt(fdInterestDto.getInterestAmt() + fdAccount.get().getIterestAmt());
+		else
+			fdAccount.get().setIterestAmt(fdInterestDto.getInterestAmt());
+		FDInterest fdInterest = new FDInterest();
+		fdInterest.setFdAccountId(fdAccount.get());
+		fdInterest.setPaidInterest(fdInterestDto.getInterestAmt());
+		fdInterest.setFromDate(fdInterestDto.getFromDate());
+		fdInterest.setToDate(fdInterestDto.getToDate());
+		fdInterest.setPaidDate(LocalDate.now());
+		fdInterest.setPaidMode(fdInterestDto.getPaidMode());
+		this.getDaoManager().getFdAccountDao().saveOrUpdateFDAccount(fdAccount.get());
+		fdInterest = this.getDaoManager().getFdAccountDao().saveOrUpdateInterest(fdInterest);
+		fdInterestDto.setInterestId(fdInterest.getInterestId());
+		fdInterestDto.setPaidDate(fdInterest.getPaidDate());
+		return fdInterestDto;
+	}
+
+	private Double calculateInterestAmt(double amount, float interest, int months) {
+		Double montlyInterest = (amount / 100) * interest;
+		return months * montlyInterest;
 	}
 
 }

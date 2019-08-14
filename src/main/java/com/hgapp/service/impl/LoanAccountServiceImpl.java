@@ -29,7 +29,7 @@ import com.hgapp.service.LoanAccountService;
 public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountService {
 
 	@Override
-	public LoanAccountDetailDto createLoanNewAccount(LoanAccountDetailDto accountDetail) {
+	public LoanAccountDetailDto saveOrUpdateLoanAccount(LoanAccountDetailDto accountDetail) {
 		Optional<CustDetail> custPersionalDetail = this.getDaoManager().getCustomerDao()
 				.findCustomerDtlById(Long.valueOf(accountDetail.getCustId()));
 		if (!custPersionalDetail.isPresent())
@@ -50,65 +50,15 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 		loanAccountDetail.setLastUpdated(LocalDate.now());
 		loanAccountDetail.setLoanStatus("Opened");
 		LoanAccountDetail createdAccountDetail = this.getDaoManager().getLoanSectionDao()
-				.createLoanNewAccount(loanAccountDetail);
+				.saveOrUpdateLoanAccount(loanAccountDetail);
 		accountDetail.setLoanAccountNo(createdAccountDetail.getLoanAccountNo());
 		return accountDetail;
 	}
 
 	@Override
-	public LoanEMIDetailDto addPayment(LoanEMIDetailDto emiDetail) {
+	public LoanAccountDetailDto findByLoanId(Long loanAccountNo) {
 		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao()
-				.getLoanAccountDetailByLoanId(emiDetail.getLoanAccNo());
-		if (!accountDetail.isPresent())
-			throw new RecordNotFound("Account Details Not Found");
-		LoanInstallmentsDetail loanEMIDetail = new LoanInstallmentsDetail();
-		loanEMIDetail.setLoanAccouuntNo(accountDetail.get());
-		loanEMIDetail.setPaymentAmount(emiDetail.getPayment());
-		loanEMIDetail.setPaymentMode(emiDetail.getPaymentMethod());
-		loanEMIDetail.setPaymentDate(LocalDate.now());
-		loanEMIDetail = this.getDaoManager().getLoanSectionDao().addPayment(loanEMIDetail);
-		Double currCollection = accountDetail.get().getTotalCollection() != null
-				? accountDetail.get().getTotalCollection()
-				: 0.00;
-		currCollection = currCollection + Double.valueOf(emiDetail.getPayment());
-		accountDetail.get().setTotalCollection(currCollection);
-		this.getDaoManager().getLoanSectionDao().createLoanNewAccount(accountDetail.get());
-		emiDetail.setPaymentId(loanEMIDetail.getPaymentId());
-		return emiDetail;
-	}
-
-	@Override
-	public List<LoanAccountDetailDto> getLoanDetailByCustIdAndStatus(Long custId, String status) {
-		if (custId == null)
-			throw new RecordNotFound("custId May Not Be Empty");
-		Optional<CustDetail> custPersionalDetail = this.getDaoManager().getCustomerDao()
-				.findCustomerDtlById(Long.valueOf(custId));
-		if (!custPersionalDetail.isPresent())
-
-			throw new RecordNotFound("Customer Not Found");
-		List<LoanAccountDetailDto> accountDetails = null;
-		if (status.equalsIgnoreCase("Opened")) {
-			accountDetails = this.getDaoManager().getLoanSectionDao().getLoanDetailByCustId(custPersionalDetail.get())
-					.stream().map(loandetail -> {
-						LoanAccountDetailDto accountDetailDto = new LoanAccountDetailDto();
-						// accountDetailDto.setLoanAccountNo(String.valueOf(loandetail.getLoanAccountNo()));
-						/*
-						 * accountDetailDto.setPrincipalAmount(String.valueOf(loandetail.
-						 * getPrincipalAmount()));
-						 * accountDetailDto.setEmiAmount(loandetail.getInstallmentAmount());
-						 * accountDetailDto.setTotalCollection(loandetail.getTotalCollection());
-						 */
-						return accountDetailDto;
-					}).collect(Collectors.toList());
-		}
-
-		return accountDetails;
-	}
-
-	@Override
-	public LoanAccountDetailDto getLoanDetailByLoanId(Long loanAccountNo) {
-		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao()
-				.getLoanAccountDetailByLoanId(loanAccountNo);
+				.findByLoanId(loanAccountNo);
 		if (!accountDetail.isPresent())
 			throw new RecordNotFound("Account Not Exist");
 		LoanAccountDetailDto accountDetailDto = new LoanAccountDetailDto();
@@ -133,7 +83,7 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 		if (null != accountDetail.get().getPaymentDate())
 			accountDetailDto.setPaymentDate(String.valueOf(accountDetail.get().getPaymentDate()));
 		List<LoanInstallmentsDetail> installmentsDetails = this.getDaoManager().getLoanSectionDao()
-				.getLoanInstallmentsByLoanId(accountDetail.get());
+				.findEMIByLoanId(accountDetail.get());
 		if (installmentsDetails != null && installmentsDetails.size() > 0) {
 			List<LoanEMIDetailDto> detailDtos = installmentsDetails.stream().map(installmets -> {
 				LoanEMIDetailDto detailDto = new LoanEMIDetailDto();
@@ -150,23 +100,10 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 	}
 
 	@Override
-	public int closeLoanAccount(String status, String remark, Long loanAccountNo) {
-		if (loanAccountNo == null)
-			throw new NullPointerException("Loan Account Number May Not Be Null");
-		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao()
-				.getLoanAccountDetailByLoanId(loanAccountNo);
-		if (!accountDetail.isPresent())
-			throw new RecordNotFound("Record Not Found");
-		int i = this.getDaoManager().getLoanSectionDao().closeLoanAccount(status, LocalDate.now(), remark,
-				loanAccountNo);
-		return i;
-	}
+	public List<LoanRepoDto> findByStatus(String status) {
 
-	@Override
-	public List<LoanRepoDto> getAllLoanAccount(String status) {
-
-		List<LoanRepoDto> accountDetailRepos = this.getDaoManager().getLoanSectionDao().getAllLoanAccount(status)
-				.stream().map(accountDetail -> {
+		List<LoanRepoDto> accountDetailRepos = this.getDaoManager().getLoanSectionDao().findByStatus(status).stream()
+				.map(accountDetail -> {
 					LoanRepoDto loanRepoDto = new LoanRepoDto();
 					loanRepoDto.setFullName(accountDetail.getCustId().getFullName());
 					loanRepoDto.setLoanAccountNo(accountDetail.getLoanAccountNo());
@@ -188,34 +125,37 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 	}
 
 	@Override
-	public DashBoardRepo getDashBoardData() {
-		DashBoardRepo dashBoardRepo = new DashBoardRepo();
-		List<LoanAccountDetail> accountDetails = this.getDaoManager().getLoanSectionDao().getAllLoanAccount("Opened");
-		List<LoanInstallmentsDetail> installmentsDetails = this.getDaoManager().getLoanSectionDao()
-				.getLoanInstallmentDetailsByPaymentDate(LocalDate.now());
-		Double totalOpenedLoanCollection = accountDetails.stream()
-				.filter(totalCollection -> totalCollection.getTotalCollection() != null)
-				.mapToDouble(totalCollection -> totalCollection.getTotalCollection()).sum();
-		Long count = accountDetails.stream().filter(totalCollection -> totalCollection.getPaymentDate() != null)
-				.collect(Collectors.counting());
-		Double totalRunningLoanAmt = accountDetails.stream()
-				.filter(totalCollection -> totalCollection.getPaymentDate() != null)
-				.mapToDouble(totalCollection -> totalCollection.getLoanAmt()).sum();
-		Double todayCollection = installmentsDetails.stream()
-				.mapToDouble(installmentsDetail -> installmentsDetail.getPaymentAmount()).sum();
-		if (installmentsDetails != null && installmentsDetails.size() > 0)
-			dashBoardRepo.setTodayTotalCollection(todayCollection);
-		dashBoardRepo.setTotalOpenedLoanAccount(count);
-		dashBoardRepo.setTotalActiveLoanCollection(totalOpenedLoanCollection);
-		dashBoardRepo.setTotalRunningLoanAmt(totalRunningLoanAmt);
-		dashBoardRepo.setPendingCollections(totalRunningLoanAmt - totalOpenedLoanCollection);
-		return dashBoardRepo;
+	public List<LoanAccountDetailDto> findByCustIdAndStatus(Long custId, String status) {
+		if (custId == null)
+			throw new RecordNotFound("custId May Not Be Empty");
+		Optional<CustDetail> custPersionalDetail = this.getDaoManager().getCustomerDao()
+				.findCustomerDtlById(Long.valueOf(custId));
+		if (!custPersionalDetail.isPresent())
+
+			throw new RecordNotFound("Customer Not Found");
+		List<LoanAccountDetailDto> accountDetails = null;
+		if (status.equalsIgnoreCase("Opened")) {
+			accountDetails = this.getDaoManager().getLoanSectionDao().findCustId(custPersionalDetail.get()).stream()
+					.map(loandetail -> {
+						LoanAccountDetailDto accountDetailDto = new LoanAccountDetailDto();
+						// accountDetailDto.setLoanAccountNo(String.valueOf(loandetail.getLoanAccountNo()));
+						/*
+						 * accountDetailDto.setPrincipalAmount(String.valueOf(loandetail.
+						 * getPrincipalAmount()));
+						 * accountDetailDto.setEmiAmount(loandetail.getInstallmentAmount());
+						 * accountDetailDto.setTotalCollection(loandetail.getTotalCollection());
+						 */
+						return accountDetailDto;
+					}).collect(Collectors.toList());
+		}
+
+		return accountDetails;
 	}
 
 	@Override
-	public LoanPaymentDetailDto addLoanPaymentDtl(LoanPaymentDetailDto paymentDetailDto) {
+	public LoanPaymentDetailDto saveOrUpdateLoanDisburserment(LoanPaymentDetailDto paymentDetailDto) {
 		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao()
-				.getLoanAccountDetailByLoanId(paymentDetailDto.getLoanAccountNo());
+				.findByLoanId(paymentDetailDto.getLoanAccountNo());
 		if (!accountDetail.isPresent())
 			throw new RecordNotFound("Not Found Loan Account");
 		if (accountDetail.get().getDisburseAmt() != null)
@@ -226,14 +166,33 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 		accountDetail.get().setPaymentDate(LocalDate.now());
 		accountDetail.get().setPaymentMode(paymentDetailDto.getPaymentMode());
 		accountDetail.get().setLastUpdated(LocalDate.now());
-		this.getDaoManager().getLoanSectionDao().createLoanNewAccount(accountDetail.get());
+		this.getDaoManager().getLoanSectionDao().saveOrUpdateLoanAccount(accountDetail.get());
 		return paymentDetailDto;
 	}
 
 	@Override
-	public List<LoanPaymentDetailDto> getPendingLoanPayment() {
+	public List<LoanRepoDto> findLoanDisbursementByStatus(String status) {
+		if (status == null)
+			throw new NullPointerException("status may not be null");
+		List<LoanRepoDto> accountDetailRepos = this.getDaoManager().getLoanSectionDao().findByStatus(status).stream()
+				.filter(loanDtls -> loanDtls.getPaymentDate() != null).map(accountDetail -> {
+					LoanRepoDto loanRepoDto = new LoanRepoDto();
+					loanRepoDto.setFullName(accountDetail.getCustId().getFullName());
+					loanRepoDto.setLoanAccountNo(accountDetail.getLoanAccountNo());
+					loanRepoDto.setPrincipalAmount(accountDetail.getPrincipalAmount());
+					loanRepoDto.setLoanAmt(accountDetail.getLoanAmt());
+					loanRepoDto.setPaymentMode(accountDetail.getPaymentMode());
+					loanRepoDto.setDisburseAmt(accountDetail.getDisburseAmt());
+					loanRepoDto.setPaymentDate(String.valueOf(accountDetail.getPaymentDate()));
+					return loanRepoDto;
+				}).collect(Collectors.toList());
+		return accountDetailRepos;
+	}
+
+	@Override
+	public List<LoanPaymentDetailDto> findPendingDisbursements() {
 		List<LoanAccountDetail> openedAccountDetailLst = this.getDaoManager().getLoanSectionDao()
-				.getAllLoanAccount("Opened");
+				.findByStatus("Opened");
 		if (openedAccountDetailLst != null && openedAccountDetailLst.size() > 0) {
 			List<LoanPaymentDetailDto> loanPendingPaymentDetails = openedAccountDetailLst.stream()
 					.filter(paymentDate -> paymentDate.getPaymentDate() == null).map(pendingLoanPayment -> {
@@ -251,9 +210,60 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 	}
 
 	@Override
-	public List<LoanCollectionRepo> getTodayCollectionSummary() {
+	public int closeLoanAccount(String status, String remark, Long loanAccountNo) {
+		if (loanAccountNo == null)
+			throw new NullPointerException("Loan Account Number May Not Be Null");
+		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao()
+				.findByLoanId(loanAccountNo);
+		if (!accountDetail.isPresent())
+			throw new RecordNotFound("Record Not Found");
+		int i = this.getDaoManager().getLoanSectionDao().closeLoanAccount(status, LocalDate.now(), remark,
+				loanAccountNo);
+		return i;
+	}
+
+	@Override
+	public LoanEMIDetailDto saveOrUpdateEMI(LoanEMIDetailDto emiDetail) {
+		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao()
+				.findByLoanId(emiDetail.getLoanAccNo());
+		if (!accountDetail.isPresent())
+			throw new RecordNotFound("Account Details Not Found");
+		LoanInstallmentsDetail loanEMIDetail = new LoanInstallmentsDetail();
+		loanEMIDetail.setLoanAccouuntNo(accountDetail.get());
+		loanEMIDetail.setPaymentAmount(emiDetail.getPayment());
+		loanEMIDetail.setPaymentMode(emiDetail.getPaymentMethod());
+		loanEMIDetail.setPaymentDate(LocalDate.now());
+		loanEMIDetail = this.getDaoManager().getLoanSectionDao().saveOrUpdateEMI(loanEMIDetail);
+		Double currCollection = accountDetail.get().getTotalCollection() != null
+				? accountDetail.get().getTotalCollection()
+				: 0.00;
+		currCollection = currCollection + Double.valueOf(emiDetail.getPayment());
+		accountDetail.get().setTotalCollection(currCollection);
+		this.getDaoManager().getLoanSectionDao().saveOrUpdateLoanAccount(accountDetail.get());
+		emiDetail.setPaymentId(loanEMIDetail.getPaymentId());
+		return emiDetail;
+	}
+
+	@Override
+	public List<LoanCollectionRepo> findLoanEMIByFromDateAndToDate(LocalDate fromDate, LocalDate toDate) {
+		if (fromDate == null && toDate == null)
+			throw new NullPointerException("fromDate/toDate may not me null/empty");
+		List<LoanCollectionRepo> loanCollectionlst = this.getDaoManager().getLoanSectionDao()
+				.findLoanEMIByFromDateAndToDate(fromDate, toDate).stream().map(loanInstallmentDtl -> {
+					LoanCollectionRepo collectionRepo = new LoanCollectionRepo();
+					collectionRepo.setFullName(loanInstallmentDtl.getLoanAccouuntNo().getCustId().getFullName());
+					collectionRepo.setAccNo(loanInstallmentDtl.getLoanAccouuntNo().getLoanAccountNo());
+					collectionRepo.setPayment(loanInstallmentDtl.getPaymentAmount());
+					collectionRepo.setPaymentDate(loanInstallmentDtl.getPaymentDate());
+					return collectionRepo;
+				}).collect(Collectors.toList());
+		return loanCollectionlst;
+	}
+
+	@Override
+	public List<LoanCollectionRepo> findAllEMIByDaily() {
 		List<LoanInstallmentsDetail> installmentsDetails = this.getDaoManager().getLoanSectionDao()
-				.getLoanInstallmentDetailsByPaymentDate(LocalDate.now());
+				.findEMIByPaymentDate(LocalDate.now());
 		if (installmentsDetails != null && installmentsDetails.size() > 0) {
 			List<LoanCollectionRepo> collectionRepos = installmentsDetails.stream().map(installMentData -> {
 				LoanCollectionRepo loanCollectionRepo = new LoanCollectionRepo();
@@ -268,9 +278,9 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 	}
 
 	@Override
-	public LoanPenaltyDto addPenalty(LoanPenaltyDto loanPenaltyDto) {
+	public LoanPenaltyDto saveOrUpdatePenalty(LoanPenaltyDto loanPenaltyDto) {
 		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao()
-				.getLoanAccountDetailByLoanId(loanPenaltyDto.getLoanAccountId());
+				.findByLoanId(loanPenaltyDto.getLoanAccountId());
 		if (!accountDetail.isPresent())
 			throw new RecordNotFound("Loan Account Not Exist");
 		LoanPenalty loanPenalty = new LoanPenalty();
@@ -279,21 +289,21 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 		loanPenalty.setPenaltyDate(LocalDate.now());
 		if (loanPenaltyDto.getRemark() != null)
 			loanPenalty.setRemark(loanPenaltyDto.getRemark());
-		loanPenalty = this.getDaoManager().getLoanSectionDao().addPenalty(loanPenalty);
+		loanPenalty = this.getDaoManager().getLoanSectionDao().saveOrUpdatePenalty(loanPenalty);
 		loanPenaltyDto.setLoanPenaltyId(loanPenalty.getLoanPenaltyId());
 		loanPenaltyDto.setPenaltyDate(loanPenalty.getPenaltyDate());
 		return loanPenaltyDto;
 	}
 
 	@Override
-	public List<LoanPenaltyDto> findDtlByLoanId(Long accountId) {
+	public List<LoanPenaltyDto> findPendaltyByLoanId(Long accountId) {
 		if (accountId == null)
 			throw new NullPointerException("accountId may not be null");
-		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao()
-				.getLoanAccountDetailByLoanId(accountId);
+		Optional<LoanAccountDetail> accountDetail = this.getDaoManager().getLoanSectionDao().findByLoanId(accountId);
 		if (!accountDetail.isPresent())
 			throw new RecordNotFound("Loan Account Not Exist");
-		List<LoanPenalty> loanPenalties = this.getDaoManager().getLoanSectionDao().findDtlByLoanId(accountDetail.get());
+		List<LoanPenalty> loanPenalties = this.getDaoManager().getLoanSectionDao()
+				.findPendaltyByLoanId(accountDetail.get());
 		if (loanPenalties == null || loanPenalties.size() < 0)
 			throw new RecordNotFound("Record Not Exist");
 		List<LoanPenaltyDto> penaltyDtos = loanPenalties.stream().map(pendaltDtl -> {
@@ -309,38 +319,28 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 	}
 
 	@Override
-	public List<LoanRepoDto> getLoanDisbursedByStatus(String status) {
-		if (status == null)
-			throw new NullPointerException("status may not be null");
-		List<LoanRepoDto> accountDetailRepos = this.getDaoManager().getLoanSectionDao().getAllLoanAccount(status)
-				.stream().filter(loanDtls -> loanDtls.getPaymentDate() != null).map(accountDetail -> {
-					LoanRepoDto loanRepoDto = new LoanRepoDto();
-					loanRepoDto.setFullName(accountDetail.getCustId().getFullName());
-					loanRepoDto.setLoanAccountNo(accountDetail.getLoanAccountNo());
-					loanRepoDto.setPrincipalAmount(accountDetail.getPrincipalAmount());
-					loanRepoDto.setLoanAmt(accountDetail.getLoanAmt());
-					loanRepoDto.setPaymentMode(accountDetail.getPaymentMode());
-					loanRepoDto.setDisburseAmt(accountDetail.getDisburseAmt());
-					loanRepoDto.setPaymentDate(String.valueOf(accountDetail.getPaymentDate()));
-					return loanRepoDto;
-				}).collect(Collectors.toList());
-		return accountDetailRepos;
-	}
-
-	@Override
-	public List<LoanCollectionRepo> getAllLoanInstallmentsByDate(LocalDate fromDate, LocalDate toDate) {
-		if (fromDate == null && toDate == null)
-			throw new NullPointerException("fromDate/toDate may not me null/empty");
-		List<LoanCollectionRepo> loanCollectionlst = this.getDaoManager().getLoanSectionDao()
-				.getAllLoanInstallmentsByDate(fromDate, toDate).stream().map(loanInstallmentDtl -> {
-					LoanCollectionRepo collectionRepo = new LoanCollectionRepo();
-					collectionRepo.setFullName(loanInstallmentDtl.getLoanAccouuntNo().getCustId().getFullName());
-					collectionRepo.setAccNo(loanInstallmentDtl.getLoanAccouuntNo().getLoanAccountNo());
-					collectionRepo.setPayment(loanInstallmentDtl.getPaymentAmount());
-					collectionRepo.setPaymentDate(loanInstallmentDtl.getPaymentDate());
-					return collectionRepo;
-				}).collect(Collectors.toList());
-		return loanCollectionlst;
+	public DashBoardRepo getDashBoardData() {
+		DashBoardRepo dashBoardRepo = new DashBoardRepo();
+		List<LoanAccountDetail> accountDetails = this.getDaoManager().getLoanSectionDao().findByStatus("Opened");
+		List<LoanInstallmentsDetail> installmentsDetails = this.getDaoManager().getLoanSectionDao()
+				.findEMIByPaymentDate(LocalDate.now());
+		Double totalOpenedLoanCollection = accountDetails.stream()
+				.filter(totalCollection -> totalCollection.getTotalCollection() != null)
+				.mapToDouble(totalCollection -> totalCollection.getTotalCollection()).sum();
+		Long count = accountDetails.stream().filter(totalCollection -> totalCollection.getPaymentDate() != null)
+				.collect(Collectors.counting());
+		Double totalRunningLoanAmt = accountDetails.stream()
+				.filter(totalCollection -> totalCollection.getPaymentDate() != null)
+				.mapToDouble(totalCollection -> totalCollection.getLoanAmt()).sum();
+		Double todayCollection = installmentsDetails.stream()
+				.mapToDouble(installmentsDetail -> installmentsDetail.getPaymentAmount()).sum();
+		if (installmentsDetails != null && installmentsDetails.size() > 0)
+			dashBoardRepo.setTodayTotalCollection(todayCollection);
+		dashBoardRepo.setTotalOpenedLoanAccount(count);
+		dashBoardRepo.setTotalActiveLoanCollection(totalOpenedLoanCollection);
+		dashBoardRepo.setTotalRunningLoanAmt(totalRunningLoanAmt);
+		dashBoardRepo.setPendingCollections(totalRunningLoanAmt - totalOpenedLoanCollection);
+		return dashBoardRepo;
 	}
 
 }

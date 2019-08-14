@@ -12,32 +12,32 @@ import com.hgapp.dto.LoanPenaltyDto;
 import com.hgapp.dto.LoanRepoDto;
 
 public interface LoanAccountService {
-	public LoanAccountDetailDto createLoanNewAccount(LoanAccountDetailDto accountDetail);
+	public LoanAccountDetailDto saveOrUpdateLoanAccount(LoanAccountDetailDto accountDetail);
 
-	public LoanEMIDetailDto addPayment(LoanEMIDetailDto emiDetail);
+	public LoanAccountDetailDto findByLoanId(Long loanAccountNo);
 
-	public LoanAccountDetailDto getLoanDetailByLoanId(Long loanAccountNo);
+	public List<LoanRepoDto> findByStatus(String status);
 
-	public List<LoanAccountDetailDto> getLoanDetailByCustIdAndStatus(Long custId, String status);
-
-	public List<LoanRepoDto> getLoanDisbursedByStatus(String status);
+	public List<LoanAccountDetailDto> findByCustIdAndStatus(Long custId, String status);
 
 	public int closeLoanAccount(String status, String remark, Long loanAccountNo);
 
-	public LoanPaymentDetailDto addLoanPaymentDtl(LoanPaymentDetailDto paymentDetailDto);
+	public LoanEMIDetailDto saveOrUpdateEMI(LoanEMIDetailDto emiDetail);
 
-	public List<LoanRepoDto> getAllLoanAccount(String status);
+	public List<LoanCollectionRepo> findLoanEMIByFromDateAndToDate(LocalDate fromDate, LocalDate toDate);
+
+	public List<LoanCollectionRepo> findAllEMIByDaily();
+
+	public LoanPaymentDetailDto saveOrUpdateLoanDisburserment(LoanPaymentDetailDto paymentDetailDto);
+
+	public List<LoanRepoDto> findLoanDisbursementByStatus(String status);
+
+	public List<LoanPaymentDetailDto> findPendingDisbursements();
+
+	public LoanPenaltyDto saveOrUpdatePenalty(LoanPenaltyDto loanPenaltyDto);
+
+	public List<LoanPenaltyDto> findPendaltyByLoanId(Long accountId);
 
 	public DashBoardRepo getDashBoardData();
-
-	public List<LoanPaymentDetailDto> getPendingLoanPayment();
-
-	public List<LoanCollectionRepo> getTodayCollectionSummary();
-
-	public LoanPenaltyDto addPenalty(LoanPenaltyDto loanPenaltyDto);
-
-	public List<LoanPenaltyDto> findDtlByLoanId(Long accountId);
-
-	public List<LoanCollectionRepo> getAllLoanInstallmentsByDate(LocalDate fromDate, LocalDate toDate);
 
 }
