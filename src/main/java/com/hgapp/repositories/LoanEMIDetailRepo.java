@@ -12,7 +12,10 @@ import com.hgapp.entity.LoanInstallmentsDetail;
 
 public interface LoanEMIDetailRepo extends CrudRepository<LoanInstallmentsDetail, Long> {
 	public List<LoanInstallmentsDetail> getLoanInstallmentsByLoanAccouuntNo(LoanAccountDetail accountDetail);
-	public List<LoanInstallmentsDetail>findByPaymentDateBetween(LocalDate fromDate,LocalDate toDate);
+
+	public List<LoanInstallmentsDetail> findLoanInstallmentsByLoanAccouuntNoIn(List<LoanAccountDetail> accountDetail);
+
+	public List<LoanInstallmentsDetail> findByPaymentDateBetween(LocalDate fromDate, LocalDate toDate);
 
 	@Query("from LoanInstallmentsDetail where paymentDate=:paymentDate")
 	public List<LoanInstallmentsDetail> getInstallmentDetailsByDate(@Param("paymentDate") LocalDate paymentDate);

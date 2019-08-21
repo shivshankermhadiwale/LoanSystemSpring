@@ -64,6 +64,7 @@ public class AuthServiceImpl extends DaoServicess implements AuthSerivice {
 				if (userRole != null)
 					authDetailDto.setRoleId(userRole.getRoleId());
 				authDetailDto.setUserId(usercredential.getUserId());
+				authDetailDto.setFullName(usercredential.getProfileId().getFullName());
 				authDetailDto.setJwtToken("Bearer " + CommanUtil.createJwtToken(usercredential.getUserName(),
 						usercredential.getPassword(), authenticationManager, jwtTokenUtil));
 				// Call servlet context intilizer for initilizing

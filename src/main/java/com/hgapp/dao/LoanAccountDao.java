@@ -18,6 +18,8 @@ public interface LoanAccountDao {
 
 	public List<LoanAccountDetail> findByStatus(String status);
 
+	public List<LoanAccountDetail> findByLoanStartDate(LocalDate loanStartDate);
+
 	public int closeLoanAccount(String status, LocalDate lastUpdated, String remark, Long loanAccountNo);
 
 	public LoanInstallmentsDetail saveOrUpdateEMI(LoanInstallmentsDetail emiDetail);
@@ -25,6 +27,8 @@ public interface LoanAccountDao {
 	public List<LoanInstallmentsDetail> findLoanEMIByFromDateAndToDate(LocalDate fromDate, LocalDate toDate);
 
 	public List<LoanInstallmentsDetail> findEMIByLoanId(LoanAccountDetail loanAccountDetail);
+
+	public List<LoanInstallmentsDetail> findEMIByLoanAccouuntNos(List<LoanAccountDetail> accountDetail);
 
 	public List<LoanInstallmentsDetail> findEMIByPaymentDate(LocalDate paymentDate);
 

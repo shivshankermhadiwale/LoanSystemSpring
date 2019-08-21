@@ -22,4 +22,6 @@ public interface ServiceManager {
 	public ExpenseService getExpenseService();
 
 	public FDAccountService getFdAccountService();
+
+	public DashBoardService getDashBoardService();
 }

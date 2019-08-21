@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -57,6 +58,13 @@ public class FDController extends ControllerManager {
 		logger.info(":find all fd statuds of--", fdStatus);
 		return ResponseEntity.ok(this.getServiceManager().getFdAccountService().findByIsActive(fdStatus));
 
+	}
+
+	@GetMapping("/find-all-holders")
+	public ResponseEntity<?> findAll() {
+		logger.info(":Find All FD Holdres--");
+		return new ResponseEntity<>(this.getServiceManager().getFdAccountService().findAllFDHolders(),
+				HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping("/findAll/{custId}")

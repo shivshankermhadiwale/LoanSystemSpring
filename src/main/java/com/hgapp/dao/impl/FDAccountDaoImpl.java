@@ -55,4 +55,9 @@ public class FDAccountDaoImpl implements FDAccountDao {
 		return fdInterestRepo.findByFdAccountId(fdAccountId);
 	}
 
+	@Override
+	public List<FDInterest> findPaidInterestByFdAccountNos(List<FDAccount> fdAccountId) {
+		return fdInterestRepo.findByFdAccountIdIn(fdAccountId);
+	}
+
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.hgapp.service.AuthSerivice;
 import com.hgapp.service.CustomerService;
+import com.hgapp.service.DashBoardService;
 import com.hgapp.service.DownloadService;
 import com.hgapp.service.ExpenseService;
 import com.hgapp.service.FDAccountService;
@@ -33,6 +34,8 @@ public class ServiceManagerImpl implements ServiceManager {
 	private ExpenseService expenseService;
 	@Autowired
 	private FDAccountService fdAccountService;
+	@Autowired
+	private DashBoardService dashBoardService;
 
 	/*
 	 * public SalesService getSalesService() { return salesService; }
@@ -105,6 +108,14 @@ public class ServiceManagerImpl implements ServiceManager {
 
 	public void setFdAccountService(FDAccountService fdAccountService) {
 		this.fdAccountService = fdAccountService;
+	}
+
+	public DashBoardService getDashBoardService() {
+		return dashBoardService;
+	}
+
+	public void setDashBoardService(DashBoardService dashBoardService) {
+		this.dashBoardService = dashBoardService;
 	}
 
 }

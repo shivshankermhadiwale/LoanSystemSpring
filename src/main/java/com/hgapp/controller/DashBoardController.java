@@ -1,4 +1,4 @@
-/*package com.hgapp.controller;
+package com.hgapp.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,5 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class DashBoardController extends ControllerManager {
 	private static final Logger logger = LogManager.getLogger(DashBoardController.class);
 
+	@GetMapping("/dashboard")
+	public ResponseEntity<?> getDashBoardData() {
+		logger.info(": fetching dashboard data:--");
+		return new ResponseEntity<>(this.getServiceManager().getDashBoardService().getDashBoardData(), HttpStatus.OK);
+
+	}
+
 }
-*/

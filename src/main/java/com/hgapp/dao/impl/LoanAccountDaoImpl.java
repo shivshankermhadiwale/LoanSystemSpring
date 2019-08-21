@@ -70,6 +70,11 @@ public class LoanAccountDaoImpl implements LoanAccountDao {
 	}
 
 	@Override
+	public List<LoanInstallmentsDetail> findEMIByLoanAccouuntNos(List<LoanAccountDetail> accountDetail) {
+		return loandEMIDetailRepo.findLoanInstallmentsByLoanAccouuntNoIn(accountDetail);
+	}
+
+	@Override
 	public List<LoanInstallmentsDetail> findEMIByPaymentDate(LocalDate paymentDate) {
 		return loandEMIDetailRepo.getInstallmentDetailsByDate(paymentDate);
 	}
@@ -83,4 +88,10 @@ public class LoanAccountDaoImpl implements LoanAccountDao {
 	public List<LoanPenalty> findPendaltyByLoanId(LoanAccountDetail accountDetail) {
 		return loanPenaltyRepo.findByLoanAccountId(accountDetail);
 	}
+
+	@Override
+	public List<LoanAccountDetail> findByLoanStartDate(LocalDate loanStartDate) {
+		return loanAccountDetailRepo.findByLoanStartDate(loanStartDate);
+	}
+
 }

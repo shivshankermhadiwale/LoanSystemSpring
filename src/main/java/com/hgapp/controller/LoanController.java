@@ -168,10 +168,4 @@ public class LoanController extends ControllerManager {
 
 	}
 
-	@GetMapping("/dashboard")
-	public ResponseEntity<?> getDashBoardData() {
-		return new ResponseEntity<>(this.getServiceManager().getLoanService().getDashBoardData(), HttpStatus.OK);
-
-	}
-
 }

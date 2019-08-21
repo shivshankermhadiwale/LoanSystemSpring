@@ -22,4 +22,6 @@ public interface FDAccountDao {
 
 	public List<FDInterest> findPaidInterestByFdAccountNo(FDAccount fdAccountId);
 
+	public List<FDInterest> findPaidInterestByFdAccountNos(List<FDAccount> fdAccountId);
+
 }

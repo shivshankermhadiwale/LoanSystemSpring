@@ -14,7 +14,10 @@ import com.hgapp.entity.LoanAccountDetail;
 public interface LoanAccountDetailRepo extends CrudRepository<LoanAccountDetail, Long> {
 
 	public List<LoanAccountDetail> findByCustId(CustDetail custId);
+
 	public List<LoanAccountDetail> findByLoanStatus(String loanStatus);
+
+	public List<LoanAccountDetail> findByLoanStartDate(LocalDate loanStartDate);
 
 	@Modifying(clearAutomatically = true)
 	@Query("update LoanAccountDetail loanDetail SET loanDetail.loanStatus=:status,loanDetail.lastUpdated=:lastUpdated,loanDetail.remark=:remark where loanDetail.loanAccountNo=:loanAccountNo")

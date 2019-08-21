@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +23,9 @@ public class UserCredential {
 	private String userName;
 	@Column(name = "password")
 	private String password;
+	@OneToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
+	private UserProfile profileId;
 	@Column(name = "token")
 	private Integer token;
 	private LocalTime tokenTime;
@@ -80,6 +86,14 @@ public class UserCredential {
 
 	public void setLoggedInUserIpAddress(String loggedInUserIpAddress) {
 		this.loggedInUserIpAddress = loggedInUserIpAddress;
+	}
+
+	public UserProfile getProfileId() {
+		return profileId;
+	}
+
+	public void setProfileId(UserProfile profileId) {
+		this.profileId = profileId;
 	}
 
 }

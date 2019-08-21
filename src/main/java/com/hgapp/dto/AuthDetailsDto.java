@@ -7,6 +7,7 @@ public class AuthDetailsDto implements Serializable {
 	private static final long serialVersionUID = -1014193388339967757L;
 	private String userName;
 	private String password;
+	private String fullName;
 	private int token;
 	private String status;
 	private String jwtToken;
@@ -76,6 +77,14 @@ public class AuthDetailsDto implements Serializable {
 
 	public void setLoggedInUserIpAddress(String loggedInUserIpAddress) {
 		this.loggedInUserIpAddress = loggedInUserIpAddress;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }

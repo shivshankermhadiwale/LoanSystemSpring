@@ -3,13 +3,13 @@ package com.hgapp.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.hgapp.dto.DashBoardRepo;
 import com.hgapp.dto.LoanAccountDetailDto;
 import com.hgapp.dto.LoanCollectionRepo;
 import com.hgapp.dto.LoanEMIDetailDto;
 import com.hgapp.dto.LoanPaymentDetailDto;
 import com.hgapp.dto.LoanPenaltyDto;
 import com.hgapp.dto.LoanRepoDto;
+import com.hgapp.dto.LoanSummaryDto;
 
 public interface LoanAccountService {
 	public LoanAccountDetailDto saveOrUpdateLoanAccount(LoanAccountDetailDto accountDetail);
@@ -37,7 +37,6 @@ public interface LoanAccountService {
 	public LoanPenaltyDto saveOrUpdatePenalty(LoanPenaltyDto loanPenaltyDto);
 
 	public List<LoanPenaltyDto> findPendaltyByLoanId(Long accountId);
-
-	public DashBoardRepo getDashBoardData();
-
+	
+	public LoanSummaryDto getLoanSummaryReportByDate(LocalDate date);
 }

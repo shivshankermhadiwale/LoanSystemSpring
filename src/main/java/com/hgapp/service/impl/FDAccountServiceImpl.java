@@ -189,4 +189,10 @@ public class FDAccountServiceImpl extends DaoServicess implements FDAccountServi
 		return months * montlyInterest;
 	}
 
+	@Override
+	public List<CustDetail> findAllFDHolders() {
+		List<FDAccount> fdAccounts=(List<FDAccount>) this.getDaoManager().getFdAccountDao().findAllFDAccounts();
+		return fdAccounts.stream().map(fdAccount->fdAccount.getCustId()).collect(Collectors.toList());
+	}
+
 }

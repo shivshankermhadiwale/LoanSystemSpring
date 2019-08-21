@@ -9,13 +9,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.hgapp.dto.DashBoardRepo;
 import com.hgapp.dto.LoanAccountDetailDto;
 import com.hgapp.dto.LoanCollectionRepo;
 import com.hgapp.dto.LoanEMIDetailDto;
 import com.hgapp.dto.LoanPaymentDetailDto;
 import com.hgapp.dto.LoanPenaltyDto;
 import com.hgapp.dto.LoanRepoDto;
+import com.hgapp.dto.LoanSummaryDto;
 import com.hgapp.entity.CustDetail;
 import com.hgapp.entity.LoanAccountDetail;
 import com.hgapp.entity.LoanInstallmentsDetail;
@@ -319,28 +319,16 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 	}
 
 	@Override
-	public DashBoardRepo getDashBoardData() {
-		DashBoardRepo dashBoardRepo = new DashBoardRepo();
-		List<LoanAccountDetail> accountDetails = this.getDaoManager().getLoanSectionDao().findByStatus("Opened");
-		List<LoanInstallmentsDetail> installmentsDetails = this.getDaoManager().getLoanSectionDao()
-				.findEMIByPaymentDate(LocalDate.now());
-		Double totalOpenedLoanCollection = accountDetails.stream()
-				.filter(totalCollection -> totalCollection.getTotalCollection() != null)
-				.mapToDouble(totalCollection -> totalCollection.getTotalCollection()).sum();
-		Long count = accountDetails.stream().filter(totalCollection -> totalCollection.getPaymentDate() != null)
-				.collect(Collectors.counting());
-		Double totalRunningLoanAmt = accountDetails.stream()
-				.filter(totalCollection -> totalCollection.getPaymentDate() != null)
-				.mapToDouble(totalCollection -> totalCollection.getLoanAmt()).sum();
-		Double todayCollection = installmentsDetails.stream()
-				.mapToDouble(installmentsDetail -> installmentsDetail.getPaymentAmount()).sum();
-		if (installmentsDetails != null && installmentsDetails.size() > 0)
-			dashBoardRepo.setTodayTotalCollection(todayCollection);
-		dashBoardRepo.setTotalOpenedLoanAccount(count);
-		dashBoardRepo.setTotalActiveLoanCollection(totalOpenedLoanCollection);
-		dashBoardRepo.setTotalRunningLoanAmt(totalRunningLoanAmt);
-		dashBoardRepo.setPendingCollections(totalRunningLoanAmt - totalOpenedLoanCollection);
-		return dashBoardRepo;
-	}
+	public LoanSummaryDto getLoanSummaryReportByDate(LocalDate loanStartDate) {
+		List<LoanAccountDetail> accountDetails = this.getDaoManager().getLoanSectionDao()
+				.findByLoanStartDate(loanStartDate);
+		LoanSummaryDto loanSummaryDto = new LoanSummaryDto();
+		if (accountDetails != null && accountDetails.size() > 0) {
+			loanSummaryDto.setNewAccounts(accountDetails.stream().count());
+			loanSummaryDto.setLoanAmounts(accountDetails.stream()
+					.collect(Collectors.summingDouble(accountDetail -> accountDetail.getPrincipalAmount())));
+		}
 
+		return loanSummaryDto;
+	}
 }
