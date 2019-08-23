@@ -35,4 +35,6 @@ public interface LoanAccountDao {
 	public LoanPenalty saveOrUpdatePenalty(LoanPenalty loanPenalty);
 
 	public List<LoanPenalty> findPendaltyByLoanId(LoanAccountDetail accountDetail);
+
+	public List<LoanPenalty> findPenaltyByLoanAccountIdIn(List<LoanAccountDetail> accountDetail);
 }

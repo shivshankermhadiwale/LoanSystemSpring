@@ -10,4 +10,6 @@ import com.hgapp.entity.LoanPenalty;
 public interface LoanPenaltyRepo extends CrudRepository<LoanPenalty, Long>{
 	public List<LoanPenalty> findByLoanAccountId(LoanAccountDetail accountDetail);
 
+	public List<LoanPenalty> findByLoanAccountIdIn(List<LoanAccountDetail> accountDetails);
+
 }

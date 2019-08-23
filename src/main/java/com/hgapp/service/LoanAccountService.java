@@ -18,6 +18,8 @@ public interface LoanAccountService {
 
 	public List<LoanRepoDto> findByStatus(String status);
 
+	public List<LoanRepoDto> findAllByCustId(Long custId);
+
 	public List<LoanAccountDetailDto> findByCustIdAndStatus(Long custId, String status);
 
 	public int closeLoanAccount(String status, String remark, Long loanAccountNo);
@@ -37,6 +39,10 @@ public interface LoanAccountService {
 	public LoanPenaltyDto saveOrUpdatePenalty(LoanPenaltyDto loanPenaltyDto);
 
 	public List<LoanPenaltyDto> findPendaltyByLoanId(Long accountId);
-	
+
+	public List<LoanPenaltyDto> findAllPendaltiesByLoanStatus(String loanStatus);
+
 	public LoanSummaryDto getLoanSummaryReportByDate(LocalDate date);
+
+	public LoanSummaryDto getLoanSummaryReportByStaus(String status);
 }

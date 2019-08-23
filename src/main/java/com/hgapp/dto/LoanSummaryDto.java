@@ -1,19 +1,21 @@
 package com.hgapp.dto;
 
 public class LoanSummaryDto {
-	private Long newAccounts;
+	private Long noOfaccounts;
 	private Double loanAmounts;
+	private Double princepleAmount;
 	private Double disbursements;
+	private Double pendingDisburement;
 	private Double penalty;
 	private Double collections;
 	private int closedAccounts;
 
-	public Long getNewAccounts() {
-		return newAccounts;
+	public Long getNoOfaccounts() {
+		return noOfaccounts;
 	}
 
-	public void setNewAccounts(Long newAccounts) {
-		this.newAccounts = newAccounts;
+	public void setNoOfaccounts(Long noOfaccounts) {
+		this.noOfaccounts = noOfaccounts;
 	}
 
 	public Double getLoanAmounts() {
@@ -55,5 +57,22 @@ public class LoanSummaryDto {
 	public void setClosedAccounts(int closedAccounts) {
 		this.closedAccounts = closedAccounts;
 	}
+
+	public Double getPrincepleAmount() {
+		return princepleAmount;
+	}
+
+	public void setPrincepleAmount(Double princepleAmount) {
+		this.princepleAmount = princepleAmount;
+	}
+
+	public Double getPendingDisburement() {
+		return pendingDisburement;
+	}
+
+	public void setPendingDisburement(Double pendingDisburement) {
+		this.pendingDisburement = pendingDisburement;
+	}
+	
 
 }

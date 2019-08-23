@@ -125,6 +125,29 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 	}
 
 	@Override
+	public List<LoanRepoDto> findAllByCustId(Long custId) {
+		Optional<CustDetail> custDetail = this.getDaoManager().getCustomerDao().findCustomerDtlById(custId);
+		if (!custDetail.isPresent())
+			throw new RecordNotFound("Record Not Found");
+		List<LoanRepoDto> accountDetailRepos = this.getDaoManager().getLoanSectionDao().findCustId(custDetail.get())
+				.stream().map(accountDetail -> {
+					LoanRepoDto loanRepoDto = new LoanRepoDto();
+					loanRepoDto.setLoanAccountNo(accountDetail.getLoanAccountNo());
+					loanRepoDto.setPrincipalAmount(accountDetail.getPrincipalAmount());
+					loanRepoDto.setLoanAmt(accountDetail.getLoanAmt());
+					loanRepoDto.setTotalCollection(accountDetail.getTotalCollection());
+					if (accountDetail.getTotalCollection() == null)
+						accountDetail.setTotalCollection(0.00);
+					loanRepoDto.setRemainCollection(accountDetail.getPrincipalAmount()
+							- accountDetail.getTotalCollection() - accountDetail.getDepositeAmt());
+					loanRepoDto.setDisburseAmt(accountDetail.getDisburseAmt());
+					loanRepoDto.setLoanStatus(accountDetail.getLoanStatus());
+					return loanRepoDto;
+				}).collect(Collectors.toList());
+		return accountDetailRepos;
+	}
+
+	@Override
 	public List<LoanAccountDetailDto> findByCustIdAndStatus(Long custId, String status) {
 		if (custId == null)
 			throw new RecordNotFound("custId May Not Be Empty");
@@ -324,11 +347,69 @@ public class LoanAccountServiceImpl extends DaoServicess implements LoanAccountS
 				.findByLoanStartDate(loanStartDate);
 		LoanSummaryDto loanSummaryDto = new LoanSummaryDto();
 		if (accountDetails != null && accountDetails.size() > 0) {
-			loanSummaryDto.setNewAccounts(accountDetails.stream().count());
+			// loanSummaryDto.setNewAccounts(accountDetails.stream().count());
 			loanSummaryDto.setLoanAmounts(accountDetails.stream()
 					.collect(Collectors.summingDouble(accountDetail -> accountDetail.getPrincipalAmount())));
+			loanSummaryDto.setDisbursements(
+					accountDetails.stream().filter(accountDetail -> accountDetail.getPaymentDate() != null)
+							.mapToDouble(accountDetail -> accountDetail.getDisburseAmt()).sum());
+
 		}
 
 		return loanSummaryDto;
+	}
+
+	@Override
+	public LoanSummaryDto getLoanSummaryReportByStaus(String status) {
+
+		List<LoanAccountDetail> accountDetails = this.getDaoManager().getLoanSectionDao().findByStatus(status);
+		if (accountDetails != null && accountDetails.size() > 0) {
+			LoanSummaryDto loanSummaryDto = new LoanSummaryDto();
+			List<LoanPenalty> loanPenalties = this.getDaoManager().getLoanSectionDao()
+					.findPenaltyByLoanAccountIdIn(accountDetails);
+			loanSummaryDto.setNoOfaccounts(accountDetails.stream().collect(Collectors.counting()));
+			loanSummaryDto.setCollections(
+					accountDetails.stream().filter(totalCollection -> totalCollection.getTotalCollection() != null)
+							.mapToDouble(totalCollection -> totalCollection.getTotalCollection()).sum());
+			loanSummaryDto.setDisbursements(
+					accountDetails.stream().filter(disburseAmount -> disburseAmount.getDisburseAmt() != null)
+							.mapToDouble(disburseAmount -> disburseAmount.getDisburseAmt()).sum());
+			loanSummaryDto.setPrincepleAmount(
+					accountDetails.stream().mapToDouble(princeAmount -> princeAmount.getPrincipalAmount()).sum());
+			loanSummaryDto.setPendingDisburement((double) 0);
+			accountDetails.forEach(accountDetail -> {
+				if (accountDetail.getDisburseAmt() == null)
+					accountDetail.setDisburseAmt((double) 0);
+				loanSummaryDto.setPendingDisburement(loanSummaryDto.getPendingDisburement()
+						+ (accountDetail.getLoanAmt() - accountDetail.getDisburseAmt()));
+			});
+			if (loanPenalties != null && loanPenalties.size() > 0)
+				loanSummaryDto.setPenalty(
+						loanPenalties.stream().mapToDouble(loanPenalty -> loanPenalty.getPenaltyAmt()).sum());
+			;
+			return loanSummaryDto;
+		}
+		return null;
+	}
+
+	@Override
+	public List<LoanPenaltyDto> findAllPendaltiesByLoanStatus(String loanStatus) {
+		List<LoanAccountDetail> accountDetails = this.getDaoManager().getLoanSectionDao().findByStatus(loanStatus);
+		if (accountDetails == null || accountDetails.size() < 0)
+			throw new NullPointerException("List is Empty");
+		List<LoanPenalty> loanPenalties = this.getDaoManager().getLoanSectionDao()
+				.findPenaltyByLoanAccountIdIn(accountDetails);
+		if (loanPenalties != null && loanPenalties.size() > 0) {
+			List<LoanPenaltyDto> loanPenaltyDtos = loanPenalties.stream().map(loanPenalty -> {
+				LoanPenaltyDto loanPenaltyDto = new LoanPenaltyDto();
+				loanPenaltyDto.setLoanAccountId(loanPenalty.getLoanAccountId().getLoanAccountNo());
+				loanPenaltyDto.setCustFullName(loanPenalty.getLoanAccountId().getCustId().getFullName());
+				loanPenaltyDto.setPenaltyAmt(loanPenalty.getPenaltyAmt());
+				loanPenaltyDto.setRemark(loanPenalty.getRemark());
+				return loanPenaltyDto;
+			}).collect(Collectors.toList());
+			return loanPenaltyDtos;
+		}
+		return null;
 	}
 }

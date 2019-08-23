@@ -9,7 +9,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>HGApp</name>
+	<name>Mini Finance</name>
 	<description>HG Mini Application</description>
 
 	<parent>

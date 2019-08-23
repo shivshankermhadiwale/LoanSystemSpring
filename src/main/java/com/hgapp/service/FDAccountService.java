@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hgapp.dto.FDAccountDto;
 import com.hgapp.dto.FDInterestDto;
+import com.hgapp.dto.FDSummaryDto;
 import com.hgapp.entity.CustDetail;
 
 public interface FDAccountService {
@@ -20,5 +21,7 @@ public interface FDAccountService {
 	public FDAccountDto closeAccount(FDAccountDto fdAccountDto);
 
 	public FDInterestDto saveOrUpdateInterest(FDInterestDto fdInterestDto);
+
+	public FDSummaryDto getFDSummaryByStatus(String status);
 
 }

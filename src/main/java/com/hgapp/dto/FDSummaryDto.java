@@ -1,18 +1,18 @@
 package com.hgapp.dto;
 
 public class FDSummaryDto {
-	private int newFd;
+	private Long nofFd;
 	private Double fdAmount;
 	private Double paidInterest;
 	private int closedFd;
 	private Double clodedFDAmount;
 
-	public int getNewFd() {
-		return newFd;
+	public Long getNofFd() {
+		return nofFd;
 	}
 
-	public void setNewFd(int newFd) {
-		this.newFd = newFd;
+	public void setNofFd(Long nofFd) {
+		this.nofFd = nofFd;
 	}
 
 	public Double getFdAmount() {

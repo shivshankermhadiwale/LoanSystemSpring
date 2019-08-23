@@ -72,6 +72,15 @@ public class LoanController extends ControllerManager {
 
 	}
 
+	@GetMapping("/find-all-accounts/{custId}")
+	public ResponseEntity<?> findAllByCustId(@PathVariable Long custId) {
+		logger.info(":Find All Loan Accounts By custId--" + custId);
+		if (custId == null)
+			throw new NullPointerException("Input Data Missing");
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().findAllByCustId(custId));
+
+	}
+
 	@PostMapping("/close")
 	public ResponseEntity<?> closeLoanAccount(@RequestBody String requestBody) throws IOException {
 		logger.info(":Closing Loan Account--" + requestBody);
@@ -148,6 +157,12 @@ public class LoanController extends ControllerManager {
 	public ResponseEntity<?> getPenaltyByLoanAccountId(@PathVariable Long loanAccountId) {
 		logger.info(":Getting Loan Penalty Of--" + loanAccountId);
 		return ResponseEntity.ok(this.getServiceManager().getLoanService().findPendaltyByLoanId(loanAccountId));
+
+	}
+	@GetMapping("/get-all-penalty/{loanStatus}")
+	public ResponseEntity<?> getAllpenaltyListByLoanStatus(@PathVariable String loanStatus) {
+		logger.info(":Getting All Penalty List By Status--" + loanStatus);
+		return ResponseEntity.ok(this.getServiceManager().getLoanService().findAllPendaltiesByLoanStatus(loanStatus));
 
 	}
 

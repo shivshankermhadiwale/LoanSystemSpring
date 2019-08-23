@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.hgapp.dto.FDAccountDto;
 import com.hgapp.dto.FDInterestDto;
+import com.hgapp.dto.FDSummaryDto;
 import com.hgapp.entity.CustDetail;
 import com.hgapp.entity.FDAccount;
 import com.hgapp.entity.FDInterest;
@@ -191,8 +192,26 @@ public class FDAccountServiceImpl extends DaoServicess implements FDAccountServi
 
 	@Override
 	public List<CustDetail> findAllFDHolders() {
-		List<FDAccount> fdAccounts=(List<FDAccount>) this.getDaoManager().getFdAccountDao().findAllFDAccounts();
-		return fdAccounts.stream().map(fdAccount->fdAccount.getCustId()).collect(Collectors.toList());
+		List<FDAccount> fdAccounts = (List<FDAccount>) this.getDaoManager().getFdAccountDao().findAllFDAccounts();
+		return fdAccounts.stream().map(fdAccount -> fdAccount.getCustId()).collect(Collectors.toList());
 	}
 
+	@Override
+	public FDSummaryDto getFDSummaryByStatus(String status) {
+		List<FDAccount> fdAccounts = null;
+		if (status.equalsIgnoreCase("Active"))
+			fdAccounts = this.getDaoManager().getFdAccountDao().findByIsActive((byte) 1);
+		if (fdAccounts != null && fdAccounts.size() > 0) {
+			List<FDInterest> fdInterests = this.getDaoManager().getFdAccountDao()
+					.findPaidInterestByFdAccountNos(fdAccounts);
+			FDSummaryDto fdSummaryDto = new FDSummaryDto();
+			fdSummaryDto.setNofFd(fdAccounts.stream().collect(Collectors.counting()));
+			fdSummaryDto.setFdAmount(fdAccounts.stream().mapToDouble(fdAccount -> fdAccount.getAmount()).sum());
+			fdSummaryDto.setPaidInterest(fdInterests.stream().mapToDouble(fdInterest -> fdInterest.getPaidInterest()).sum());
+			
+			return fdSummaryDto;
+		}
+		return null;
+
+	}
 }

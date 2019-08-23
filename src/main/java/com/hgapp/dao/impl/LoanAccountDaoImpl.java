@@ -94,4 +94,9 @@ public class LoanAccountDaoImpl implements LoanAccountDao {
 		return loanAccountDetailRepo.findByLoanStartDate(loanStartDate);
 	}
 
+	@Override
+	public List<LoanPenalty> findPenaltyByLoanAccountIdIn(List<LoanAccountDetail> accountDetail) {
+		return loanPenaltyRepo.findByLoanAccountIdIn(accountDetail);
+	}
+
 }
